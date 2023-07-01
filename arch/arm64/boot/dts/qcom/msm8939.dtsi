@@ -23,6 +23,8 @@
 	aliases {
 		mmc0 = &sdhc_1; /* SDC1 eMMC slot */
 		mmc1 = &sdhc_2; /* SDC2 SD card slot */
+		remoteproc0 = &pronto;
+		remoteproc1 = &mpss;
 	};
 
 	chosen { };
