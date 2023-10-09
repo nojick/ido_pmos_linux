@@ -100,7 +100,7 @@ static const struct camss_subdev_resources csid_res_8x16[] = {
 
 static const struct camss_subdev_resources ispif_res_8x16 = {
 	/* ISPIF */
-	.clock = { "top_ahb", "ahb", "ispif_ahb",
+	.clock = { "top_ahb", "ahb", "ispif_ahb", "ispif_ahb_clk",
 		   "csi0", "csi0_pix", "csi0_rdi",
 		   "csi1", "csi1_pix", "csi1_rdi" },
 	.clock_for_reset = { "vfe0", "csi_vfe0" },
@@ -113,13 +113,12 @@ static const struct camss_subdev_resources vfe_res_8x16[] = {
 	/* VFE0 */
 	{
 		.regulators = {},
-		.clock = { "top_ahb", "vfe0", "csi_vfe0",
-			   "vfe_ahb", "vfe_axi", "ahb" },
+		.clock = { "top_ahb", "vfe0_src", "vfe0", "csi_vfe0",
+			   "vfe_ahb", "vfe_axi", "ahb" "ispif_ahb_clk"},
 		.clock_rate = { { 0 },
 				{ 50000000, 80000000, 100000000, 160000000,
 				  177780000, 200000000, 266670000, 320000000,
-				  400000000, 465000000 },
-				{ 0 },
+				  400000000, 465000000,480000000, 600000000 },
 				{ 0 },
 				{ 0 },
 				{ 0 },
