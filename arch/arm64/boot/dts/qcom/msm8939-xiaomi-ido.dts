@@ -6,6 +6,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
 #include <dt-bindings/leds/common.h>
+#include <dt-bindings/power/summit,smb347-charger.h>
 
 / {
 	model = "Xiaomi Redmi 3";
@@ -70,10 +71,25 @@
 		};
 	};
 
-    bat: battery {
+    battery: battery-cell {
         compatible = "simple-battery";
-        voltage-max-design-microvolt = <4350000>;
-		voltage-min-design-microvolt = <3300000>;
+        charge-full-design-microamp-hours = <4000000>;
+        over-voltage-threshold-microvolt = <4400000>;
+	voltage-max-design-microvolt = <4400000>;
+	voltage-min-design-microvolt = <3400000>;
+	constant-charge-current-max-microamp = <1800000>;
+	operating-range-celsius = <0 45>;
+        alert-celsius = <3 42>;
+	ocv-capacity-celsius = <25>;
+	ocv-capacity-table-0 = <4380000 100>, <4292000 95>,
+			<4234000 90>, <4190000 85>, <4158000 80>, <4125000 75>,
+			<4090000 70>, <4040000 65>, <3988000 60>, <3950000 55>,
+			<3925000 50>, <3880000 45>, <3840000 40>, <3800000 35>,
+			<3784000 30>, <3761000 25>, <3743000 20>, <3722000 16>,
+			<3702000 13>, <3690000 11>, <3688000 10>, <3687000 9>,
+			<3685000 8>, <3683000 7>, <3677000 6>, <3656000 5>,
+			<3612000 4>, <3554000 3>, <3462000 2>, <3322000 1>,
+			<3000000 0>;
     };
 
     usb_id: usb-id {
@@ -193,6 +209,45 @@
 	};
 };
 
+&blsp_i2c4 {
+
+	status = "okay";
+
+	power_supply: charger@57 {
+		compatible = "summit,smb358";
+		reg = <0x57>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <62 IRQ_TYPE_LEVEL_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&smb_int_default>;	
+		summit,enable-charge-control = <SMB3XX_CHG_ENABLE_PIN_ACTIVE_HIGH>;
+		summit,soft-compensation-method = <SMB3XX_SOFT_TEMP_COMPENSATE_CURRENT>;
+            	summit,chip-temperature-threshold-celsius = <100>;
+            	summit,usb-current-limit-microamp = <500000>;
+            	summit,enable-usb-charging;
+		monitored-battery = <&battery>;
+
+		usb_vbus: usb-vbus {
+			regulator-name = "usb_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			regulator-min-microamp = <500000>;
+			regulator-max-microamp = <500000>;
+	};
+};
+	cw2015@62 {
+		compatible = "cellwise,cw2015";
+		reg = <0x62>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <120 IRQ_TYPE_LEVEL_LOW>;
+		cellwise,monitor-interval-ms = <1000>;
+		vdd-supply = <&pm8916_l17>;
+		vcc_i2c-supply = <&pm8916_l6>;
+		monitored-battery = <&battery>;
+		power-supplies = <&power_supply>;
+		};
+};
+
 &blsp_i2c5 {
 	status = "okay";
 
@@ -299,12 +354,6 @@ ports {
 	status = "okay";
 };
 
-&pm8916_bms {
-	status = "okay";
-
-	monitored-battery = <&bat>;
-};
-
 &pm8916_pwm {
 	status = "okay";
 	pinctrl-names = "default";
@@ -349,12 +398,11 @@ ports {
 &usb {
 	status = "okay";
 	extcon = <&usb_id>, <&usb_id>;
+	vbus-supply = <&usb_vbus>;
 };
 
 &usb_hs_phy {
 	extcon = <&usb_id>;
-    v1p8-supply = <&pm8916_l7>;
-	v3p3-supply = <&pm8916_l13>;
 };
 
 
@@ -407,6 +455,14 @@ ports {
 		function = "gpio";
 
 		drive-strength = <8>;
+		bias-pull-up;
+	};
+
+	smb_int_default: smb-int-default-state {
+		pins = "gpio62";
+		function = "gpio";
+
+		drive-strength = <2>;
 		bias-pull-up;
 	};
 
