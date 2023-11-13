@@ -425,7 +425,6 @@ ports {
 	pinctrl-1 = <&cdc_pdm_sleep>;
 
 	model = "msm8939-snd-card-skuk";
-	qcom,model = "msm8939-snd-card-skuk";
 	audio-routing =
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS Internal2",
