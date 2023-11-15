@@ -3,6 +3,7 @@
 /dts-v1/;
 
 #include "msm8939-pm8916.dtsi"
+#include "msm8916-modem-qdsp6.dtsi"
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
 #include <dt-bindings/leds/common.h>
@@ -376,6 +377,10 @@ ports {
 	status = "okay";
 };
 
+&mpss_mem {
+	reg = <0x0 0x86800000 0x0 0x5100000>;
+};
+
 &pm8916_pwm {
 	status = "okay";
 	pinctrl-names = "default";
@@ -425,19 +430,23 @@ ports {
 	pinctrl-1 = <&cdc_pdm_sleep>;
 
 	model = "msm8939-snd-card-skuk";
+	widgets =
+		"Speaker", "Speaker",
+		"Headphone", "Headphones";
+	pin-switches = "Speaker", "Headphones";
 	audio-routing =
+		"Speaker", "Speaker Amp OUTL",
+		"Speaker", "Speaker Amp OUTR",
+		"Speaker Amp INL", "HPH_R",
+		"Speaker Amp INR", "HPH_R",
+		"Headphones", "Headphones Switch OUTL",
+		"Headphones", "Headphones Switch OUTR",
+		"Headphones Switch INL", "HPH_L",
+		"Headphones Switch INR", "HPH_R",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS Internal2",
 		"AMIC3", "MIC BIAS External1";
 	aux-devs = <&speaker_amp>, <&headphones_switch>;
-};
-
-&lpass {
-	status = "okay";
-};
-
-&lpass_codec {
-	status = "okay";
 };
 
 &pm8916_codec {
