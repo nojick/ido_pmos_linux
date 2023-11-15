@@ -428,19 +428,7 @@ ports {
 	pinctrl-1 = <&cdc_pdm_sleep>;
 
 	model = "msm8939-snd-card-skuk";
-	widgets =
-		"Speaker", "Speaker",
-		"Headphone", "Headphones";
-	pin-switches = "Speaker", "Headphones";
 	audio-routing =
-		"Speaker", "Speaker Amp OUTL",
-		"Speaker", "Speaker Amp OUTR",
-		"Speaker Amp INL", "HPH_R",
-		"Speaker Amp INR", "HPH_R",
-		"Headphones", "Headphones Switch OUTL",
-		"Headphones", "Headphones Switch OUTR",
-		"Headphones Switch INL", "HPH_L",
-		"Headphones Switch INR", "HPH_R",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS Internal2",
 		"AMIC3", "MIC BIAS External1";
