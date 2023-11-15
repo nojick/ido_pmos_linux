@@ -66,8 +66,6 @@
 	};
 
     reserved-memory {
-        /delete-node/ rmtfs@86681000;
-		/delete-node/ rfsa@867e0000;
 		/delete-node/ tz-apps@86000000;
 /*
 		cont_splash_mem: framebuffer@83000000 {
@@ -378,7 +376,7 @@ ports {
 };
 
 &mpss_mem {
-	reg = <0x0 0x86800000 0x0 0x5100000>;
+	reg = <0x0 0x86800000 0x0 0x05600000>;
 };
 
 &pm8916_pwm {
