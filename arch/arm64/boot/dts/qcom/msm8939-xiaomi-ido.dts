@@ -24,12 +24,12 @@
 
 	/* AW8736 */
 	speaker_amp: audio-amplifier {
-		compatible = "awinic,aw8738";
+		compatible = "simple-audio-amplifier";
 
 		pinctrl-0 = <&spk_ext_default>;
 		pinctrl-names = "default";
 
-		mode-gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
 		awinic,mode = <3>;
 		sound-name-prefix = "Speaker Amp";
 	};
