@@ -39,3 +39,5 @@ obj-$(CONFIG_DRM_PANEL_WINGTECH_QIMEI_ILI9881) += panel-wingtech-qimei-ili9881.o
 obj-$(CONFIG_DRM_PANEL_WINGTECH_SHARP_R69431) += panel-wingtech-sharp-r69431.o
 obj-$(CONFIG_DRM_PANEL_WINGTECH_TIANMA_HX8394D) += panel-wingtech-tianma-hx8394d.o
 obj-$(CONFIG_DRM_PANEL_WINGTECH_YASSY_ILI9881) += panel-wingtech-yassy-ili9881.o
+obj-$(CONFIG_DRM_PANEL_XIAOMI_IDO_ili9881c) += panel-xiaomi-ili9881c-tianma.o
+obj-$(CONFIG_DRM_PANEL_XIAOMI_IDO_BOE_HX8394F) += panel-xiaomi-hx8394f-boe.o
