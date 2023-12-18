@@ -1565,6 +1565,10 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&cci0_default>;
 			status = "disabled";
+
+			cci_i2c0: i2c-bus@0 {
+				reg = <0>;
+				clock-frequency = <400000>;
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
