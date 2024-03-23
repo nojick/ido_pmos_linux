@@ -15,19 +15,28 @@
 	status = "okay";
 };
 
+&gps_mem {
+	status = "okay";
+};
+
 &lpass {
 	status = "reserved"; /* Controlled by QDSP6 */
+};
+
+&mba_mem {
+	status = "okay";
 };
 
 &memshare {
 	status = "okay";
 };
 
-&memshare_gps {
-	memory-region = <&gps_mem>;
-};
 
 &mpss {
+	status = "okay";
+};
+
+&mpss_mem {
 	status = "okay";
 };
 

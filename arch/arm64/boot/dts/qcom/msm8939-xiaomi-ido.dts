@@ -77,10 +77,6 @@
 			no-map;
 		};
 
-		gps_mem: gps@86800000 {
-			reg = <0x0 0x86800000 0x0 0x8000000>;
-			no-map;
-		};
 	};
 
     gpio-keys {
@@ -377,6 +373,10 @@ ports {
 	status = "okay";
 };
 
+&mpss_mem {
+	reg = <0x0 0x86800000 0x0 0x05600000>;
+};
+
 &pm8916_pwm {
 	status = "okay";
 	pinctrl-names = "default";
@@ -393,6 +393,10 @@ ports {
 };
 
 &pronto {
+	status = "okay";
+};
+
+&wcnss_mem {
 	status = "okay";
 };
 
@@ -439,6 +443,14 @@ ports {
 		"AMIC2", "MIC BIAS Internal2",
 		"AMIC3", "MIC BIAS External1";
 	aux-devs = <&speaker_amp>, <&headphones_switch>;
+};
+
+&venus_mem {
+	status = "okay";
+};
+
+&wcnss_mem {
+	status = "okay";
 };
 
 &wcd_codec {
