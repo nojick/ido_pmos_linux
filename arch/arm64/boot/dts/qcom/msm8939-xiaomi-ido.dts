@@ -93,6 +93,16 @@
 		};
 	};
 
+	reg_cam_vdig: regulator-cam-vdig {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_vdig";
+		startup-delay-us = <0>;
+		enable-active-high;
+		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&cam_vdig_default>;
+		pinctrl-names = "default";
+	};
+
     battery: battery-cell {
         compatible = "simple-battery";
         charge-full-design-microamp-hours = <4000000>;
@@ -378,13 +388,13 @@ ports {
 		reg = <0x10>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
-		clock-frequency = <19200000>;
+		clock-frequency = <24000000>;
 
 		enable-gpios = <&tlmm 35 GPIO_ACTIVE_HIGH>;
 		pinctrl-0 = <&camera_rear_default>;
 		pinctrl-names = "default";
 		avdd-supply= <&pm8916_l17>;
-		dvdd-supply = <&pm8916_l2>;
+		dvdd-supply = <&reg_cam_vdig>;
 		vio-supply = <&pm8916_l6>;
 		aux-supply = <&pm8916_l10>;
 		status = "okay";
@@ -639,6 +649,14 @@ ports {
 			drive-strength = <2>;
 			bias-pull-down;
 		};
+	};
+
+	cam_vdig_default: cam-vdig-default-state {
+		pins = "gpio17";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
 	};
 
 	ltr559_int_pin {
