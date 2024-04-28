@@ -96,8 +96,9 @@
 	reg_cam_vdig: regulator-cam-vdig {
 		compatible = "regulator-fixed";
 		regulator-name = "cam_vdig";
-		startup-delay-us = <0>;
-		enable-active-high;
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		regulator-always-on;
 		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
 		pinctrl-0 = <&cam_vdig_default>;
 		pinctrl-names = "default";
@@ -390,7 +391,8 @@ ports {
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
 		clock-frequency = <24000000>;
 
-		enable-gpios = <&tlmm 35 GPIO_ACTIVE_HIGH>;
+		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
 		pinctrl-0 = <&camera_rear_default>;
 		pinctrl-names = "default";
 		avdd-supply= <&pm8916_l17>;
