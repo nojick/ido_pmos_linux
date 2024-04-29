@@ -379,6 +379,7 @@ ports {
 };
 
 &camss {
+	vdda-supply = <&pm8916_l2>;
 	status = "okay";
 
 	ports {
@@ -404,10 +405,10 @@ ports {
 };
 
 &cci_i2c0 {
-	camera-sensor@10 { // Primary rear camera
+	camera-sensor@2d { // Primary rear camera
 		compatible = "samsung,s5k3l8";
 
-		reg = <0x10>;
+		reg = <0x2d>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
 		clock-frequency = <24000000>;
@@ -431,11 +432,11 @@ ports {
 			};
 		};
 	};
-
-	camera-sensor@20 { // Primary rear camera
+	
+	camera-sensor@36 { // Primary front camera
 		compatible = "ovti,ov5670";
 
-		reg = <0x20>;
+		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
 
