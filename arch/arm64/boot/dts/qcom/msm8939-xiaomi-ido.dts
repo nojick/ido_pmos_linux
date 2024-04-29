@@ -435,10 +435,11 @@ ports {
 	
 	camera-sensor@36 { // Primary front camera
 		compatible = "ovti,ov5670";
-
+		
 		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
+		clock-rates = <19200000>;
 
 		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
