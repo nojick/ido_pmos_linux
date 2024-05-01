@@ -20,6 +20,8 @@
 		mmc0 = &sdhc_1; /* eMMC */
 		mmc1 = &sdhc_2; /* SD card */
 		serial0 = &blsp_uart2;
+		remoteproc0 = &wcnss;
+		remoteproc1 = &mpss;
 	};
 
 	/* AW8736 */
