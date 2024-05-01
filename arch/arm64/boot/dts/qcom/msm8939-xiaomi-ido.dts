@@ -104,22 +104,6 @@
 		pinctrl-names = "default";
 	};
 
-	camera_dovdd_1v8: camera-dovdd-1v8 {
-		compatible = "regulator-fixed";
-		regulator-name = "camera_dovdd";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		regulator-always-on;
-	};
-
-	camera_avdd_2v8: camera-avdd-2v8 {
-		compatible = "regulator-fixed";
-		regulator-name = "camera_avdd";
-		regulator-min-microvolt = <2850000>;
-		regulator-max-microvolt = <2850000>;
-		regulator-always-on;
-	};
-
     battery: battery-cell {
         compatible = "simple-battery";
         charge-full-design-microamp-hours = <4000000>;
@@ -462,8 +446,8 @@ ports {
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
-		dovdd-supply = <&camera_dovdd_1v8>;
-		avdd-supply = <&camera_avdd_2v8>;
+		dovdd-supply = <&pm8916_l6>;
+		avdd-supply = <&pm8916_l17>;
 		dvdd-supply = <&reg_cam_vdig>;
 		status = "okay";
 
