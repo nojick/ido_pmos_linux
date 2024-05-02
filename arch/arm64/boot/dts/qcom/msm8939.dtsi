@@ -1572,6 +1572,13 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
+
+			cci_i2c1: i2c-bus@1 {
+				reg = <1>;
+				clock-frequency = <400000>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+			};
 		};
 
 		gpu: gpu@1c00000 {
