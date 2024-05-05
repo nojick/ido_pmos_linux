@@ -2741,10 +2741,10 @@ static int ov5670_probe(struct i2c_client *client)
 
 		/* Check module identity */
 		ret = ov5670_identify_module(ov5670);
-		//if (ret) {
-		//	dev_err_probe(&client->dev, ret, "ov5670_identify_module() error\n");
-		//	goto error_power_off;
-		//}
+		if (ret) {
+			dev_err_probe(&client->dev, ret, "ov5670_identify_module() error\n");
+			goto error_power_off;
+		}
 	}
 
 	mutex_init(&ov5670->mutex);
@@ -2800,9 +2800,9 @@ error_handler_free:
 error_mutex_destroy:
 	mutex_destroy(&ov5670->mutex);
 
-//error_power_off:
-//	if (full_power)
-//		ov5670_runtime_suspend(&client->dev);
+error_power_off:
+	if (full_power)
+		ov5670_runtime_suspend(&client->dev);
 
 error_endpoint:
 	v4l2_fwnode_endpoint_free(&ov5670->endpoint);
