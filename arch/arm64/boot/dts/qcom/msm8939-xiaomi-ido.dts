@@ -93,13 +93,12 @@
 		};
 	};
 
-	reg_cam_vdig: regulator-cam-vdig {
+	reg_cam_vdig: reg_cam_vdig {
 		compatible = "regulator-fixed";
-		regulator-name = "cam_vdig";
-		startup-delay-us = <0>;
+		regulator-name = "reg_cam_vdig";
 		regulator-min-microvolt = <1200000>;
 		regulator-max-microvolt = <1200000>;
-		regulator-always-on;
+		enable-active-high;
 		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
 		pinctrl-0 = <&cam_vdig_default>;
 		pinctrl-names = "default";
@@ -425,6 +424,7 @@ ports {
 		port {
 			ov5670: endpoint {
 				data-lanes = <0 1>;
+				clock-noncontinuous;
 				link-frequencies = /bits/ 64 <360000000>;
 				remote-endpoint = <&csiphy0_ep>;
 			};
