@@ -392,7 +392,16 @@ ports {
 	vdda-supply = <&pm8916_l2>;
 	status = "okay";
 
+	ports {
+		port@0 {
+			reg = <0>;
+			csiphy0_ep: endpoint {
+				data-lanes = <1 2>;
+				remote-endpoint = <&ov5670>;
+			};
+		};
 	};
+};
 
 &cci {
 	status = "okay";
