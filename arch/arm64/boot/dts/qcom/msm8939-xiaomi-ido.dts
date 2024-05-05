@@ -98,11 +98,26 @@
 		regulator-name = "reg_cam_vdig";
 		regulator-min-microvolt = <1200000>;
 		regulator-max-microvolt = <1200000>;
-		enable-active-high;
+		startup-delay-us = <100000>;
+		regulator-boot-on;
+	        regulator-always-on;
+	        vin-supply = <&pm8916_l2>;
 		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
 		pinctrl-0 = <&cam_vdig_default>;
 		pinctrl-names = "default";
 	};
+
+	fake-reg-mclk2 {
+        	compatible = "regulator-fixed-clock";
+        	regulator-name = "fake-reg-mclk1";
+        	pinctrl-names = "default";
+        	enable-active-high;
+		regulator-boot-on;
+		startup-delay-us = <70000>;
+        	pinctrl-0 = <&cam_sensor_mclk1>;
+        	clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+        	regulator-always-on;
+    };
 
     battery: battery-cell {
         compatible = "simple-battery";
@@ -382,15 +397,6 @@ ports {
 	vdda-supply = <&pm8916_l2>;
 	status = "okay";
 
-	ports {
-		port@0 {
-			reg = <0>;
-			csiphy0_ep: endpoint {
-				data-lanes = <0 1>;
-				remote-endpoint = <&ov5670>;
-			};
-		};
-	};
 };
 
 &cci {
@@ -399,38 +405,7 @@ ports {
 
 &cci_i2c0 {
 
-	camera-sensor@20 { // Primary front camera
-		compatible = "ovti,ov5670";
-		
-		reg = <0x20>;
-
-		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		clock-names = "xvclk";
-		clock-frequency = <19200000>;
-		clock-rates = <19200000>;
-
-		pinctrl-0 = <&camera_front_default>, <&cam_sensor_mclk1>;
-		pinctrl-names = "default";
-		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
-		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
-
-		dovdd-supply = <&pm8916_l6>;
-		avdd-supply = <&pm8916_l17>;
-		dvdd-supply = <&reg_cam_vdig>;
-		status = "okay";
-
-		orientation = <0>;
-
-		port {
-			ov5670: endpoint {
-				data-lanes = <0 1>;
-				clock-noncontinuous;
-				link-frequencies = /bits/ 64 <360000000>;
-				remote-endpoint = <&csiphy0_ep>;
-			};
-		};
-	};
-
+status = "okay";
 };
 
 &gpu {
