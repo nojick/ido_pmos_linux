@@ -105,6 +105,15 @@
 		pinctrl-names = "default";
 	};
 
+ fake-reg-mclk2 {
+        compatible = "regulator-fixed-clock";
+        regulator-name = "fake-reg-mclk1";
+        pinctrl-names = "default";
+        pinctrl-0 = <&cam_sensor_mclk1>;
+        clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+        regulator-always-on;
+    };
+
     battery: battery-cell {
         compatible = "simple-battery";
         charge-full-design-microamp-hours = <4000000>;
@@ -405,7 +414,7 @@ ports {
 		
 		reg = <0x10>;
 
-		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
+		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		clock-names = "xvclk";
 		clock-frequency = <19200000>;
 		clock-rates = <19200000>;
