@@ -402,7 +402,7 @@ ports {
 
 &cci_i2c0 {
 	camera-sensor@36 { // Primary front camera
-		compatible = "ovti,ov5670";
+		compatible = "ovti,ov5675";
 		
 		reg = <0x36>;
 
@@ -413,7 +413,7 @@ ports {
 
 		pinctrl-0 = <&camera_front_default>, <&cam_sensor_mclk1>;
 		pinctrl-names = "default";
-		//powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
+		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 
 		dovdd-supply = <&pm8916_l6>;
