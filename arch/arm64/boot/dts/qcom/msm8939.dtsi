@@ -969,22 +969,6 @@
 				bias-pull-down;
 			};
 
-			camera_front_default: camera-front-default-state {
-				pwdn-pins {
-					pins = "gpio33";
-					function = "gpio";
-					drive-strength = <2>;
-					bias-disable;
-				};
-
-				rst-pins {
-					pins = "gpio28";
-					function = "gpio";
-					drive-strength = <2>;
-					bias-disable;
-				};
-			};
-
 			camera_rear_default: camera-rear-default-state {
 				pwdn-pins {
 					pins = "gpio34";
