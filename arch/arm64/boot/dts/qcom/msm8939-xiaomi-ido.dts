@@ -414,7 +414,7 @@ ports {
 
 &cci_i2c0 {
 	camera-sensor@36 { // Primary front camera
-		compatible = "ovti,ov5670";
+		compatible = "ovti,ov5675";
 		
 		reg = <0x36>;
 
