@@ -420,7 +420,7 @@ ports {
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		clock-names = "xvclk";
-		clock-frequency = <24000000>;
+		clock-frequency = <19200000>;
 
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
