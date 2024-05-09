@@ -437,8 +437,8 @@ ports {
 		port {
 			ov5670: endpoint {
 				data-lanes = <0 1>;
-				clock-noncontinuous;
 				remote-endpoint = <&csiphy0_ep>;
+				link-frequencies = /bits/ 64 <450000000>;
 			};
 		};
 	};
