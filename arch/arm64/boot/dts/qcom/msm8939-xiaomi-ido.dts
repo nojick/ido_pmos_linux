@@ -382,7 +382,7 @@ ports {
 &camss {
 	vdda-supply = <&pm8916_l2>;
 	status = "okay";
-	
+
 	ports {
 		port@0 {
 			reg = <0>;
@@ -663,15 +663,6 @@ ports {
 
 		drive-strength = <2>;
 		bias-disable;
-	};
-
-	camera_front_default: camera-front-default-state {
-		rst-pins {
-			pins = "gpio28";
-			function = "gpio";
-			drive-strength = <2>;
-			bias-disable;
-		};
 	};
 
 	cam_sensor_mclk1: cam-sensor-mclk1 {
