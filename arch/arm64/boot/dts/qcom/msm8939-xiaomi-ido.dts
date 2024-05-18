@@ -93,6 +93,18 @@
 		};
 	};
 
+	reg_cam_vdig: regulator-cam-vdig {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_vdig";
+		startup-delay-us = <0>;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		enable-active-high;
+		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&cam_vdig_default>;
+		pinctrl-names = "default";
+	};
+
     battery: battery-cell {
         compatible = "simple-battery";
         charge-full-design-microamp-hours = <4000000>;
@@ -367,6 +379,101 @@ ports {
 	qcom,dsi-phy-regulator-ldo-mode;
 };
 
+&camss {
+	vdda-supply = <&pm8916_l2>;
+	status = "okay";
+
+	ports {
+		port@0 {
+			reg = <0>;
+			csiphy0_ep: endpoint {
+				data-lanes = <0 1 2 3>;
+				remote-endpoint = <&s5k3l8>;
+			};
+		};
+	};
+
+	ports {
+		port@1 {
+			reg = <1>;
+			csiphy1_ep: endpoint {
+				data-lanes = <1 2>;
+				remote-endpoint = <&ov5670>;
+			};
+		};
+	};
+};
+
+&cci {
+	status = "okay";
+};
+
+&cci_i2c0 {
+
+	camera-sensor@10 { // Primary rear camera
+		compatible = "samsung,s5k3l8";
+
+		reg = <0x10>;
+
+		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
+		clock-frequency = <24000000>;
+
+		pinctrl-0 = <&camera_rear_default>;
+		pinctrl-names = "default";
+		powerdown-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&tlmm 34 GPIO_ACTIVE_LOW>;
+
+		avdd-supply= <&pm8916_l17>;
+		dvdd-supply = <&reg_cam_vdig>;
+		vio-supply = <&pm8916_l6>;
+		aux-supply = <&pm8916_l10>;
+
+		rotation = <270>;
+		orientation = <1>;
+
+		status = "okay";
+
+		port {
+			s5k3l8: endpoint {
+				data-lanes = <0 1 2 3>;
+				remote-endpoint = <&csiphy0_ep>;
+			};
+		};
+	};
+
+	camera-sensor@36 { // Primary front camera
+		compatible = "ovti,ov5670";
+		
+		reg = <0x36>;
+
+		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+		clock-names = "xvclk";
+		clock-frequency = <19200000>;
+		clock-rates = <19200000>;
+
+		pinctrl-0 = <&camera_front_default>;
+		pinctrl-names = "default";
+		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
+
+		dovdd-supply = <&pm8916_l6>;
+		avdd-supply = <&pm8916_l17>;
+		dvdd-supply = <&reg_cam_vdig>;
+		status = "okay";
+
+		orientation = <0>;
+
+		port {
+			ov5670: endpoint {
+				data-lanes = <1 2>;
+				link-frequencies = /bits/ 64 <360000000>;
+				remote-endpoint = <&csiphy1_ep>;
+			};
+		};
+	};
+
+};
+
 &gpu {
 	status = "okay";
 };
@@ -590,6 +697,14 @@ ports {
 			drive-strength = <2>;
 			bias-pull-down;
 		};
+	};
+
+	cam_vdig_default: cam-vdig-default-state {
+		pins = "gpio17";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
 	};
 
 	ltr559_int_pin {
