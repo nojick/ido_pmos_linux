@@ -19,8 +19,8 @@
 
 #define OV5670_XVCLK_FREQ		19200000
 
-#define OV5670_REG_CHIP_ID		0x300b
-#define OV5670_CHIP_ID			0x5670
+#define OV5670_REG_CHIP_ID		0x300a
+#define OV5670_CHIP_ID			0x005670
 
 #define OV5670_REG_MODE_SELECT		0x0100
 #define OV5670_MODE_STANDBY		0x00
@@ -145,9 +145,9 @@ static const struct v4l2_rect ov5670_analog_crop = {
 };
 
 static const struct ov5670_reg mipi_data_rate_840mbps[] = {
-	{0x0300, 0x04}, // PLL
+	{0x0300, 0x04},
 	{0x0301, 0x00},
-	{0x0302, 0x69},
+	{0x0302, 0x84},
 	{0x0303, 0x00},
 	{0x0304, 0x03},
 	{0x0305, 0x01},
@@ -155,43 +155,46 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x030a, 0x00},
 	{0x030b, 0x00},
 	{0x030c, 0x00},
-	{0x030d, 0x1e},
+	{0x030d, 0x26},
 	{0x030e, 0x00},
 	{0x030f, 0x06},
-	{0x0312, 0x01}, // PLL
-	{0x3000, 0x00}, // Fsin/Vsync input
-	{0x3002, 0x21}, // ULPM output
-	{0x3005, 0xf0}, // sclk_psram on, sclk_syncfifo on
-	{0x3007, 0x00}, //
-	{0x3015, 0x0f}, // npump clock div = 1, disable Ppumu_clk
-	{0x3018, 0x32}, // MIPI 2 lane
-	{0x301a, 0xf0}, // sclk_stb on, sclk_ac on, slck_tc on
-	{0x301b, 0xf0}, // sclk_blc on, sclk_isp on, sclk_testmode on, sclk_vfifo on
-	{0x301c, 0xf0}, // sclk_mipi on, sclk_dpcm on, sclk_otp on
-	{0x301d, 0xf0}, // sclk_asram_tst on, sclk_grp on, sclk_bist on,
-	{0x301e, 0xf0}, // sclk_ilpwm on, sclk_lvds on, sclk-vfifo on, sclk_mipi on,
-	{0x3030, 0x00}, // sclk normal, pclk normal
-	{0x3031, 0x0a}, // 10-bit mode
-	{0x303c, 0xff}, // reserved
-	{0x303e, 0xff}, // reserved
-	{0x3040, 0xf0}, // sclk_isp_fc_en, sclk_fc-en, sclk_tpm_en, sclk_fmt_en
-	{0x3041, 0x00}, // reserved
-	{0x3042, 0xf0}, // reserved
-	{0x3106, 0x11}, // sclk_div = 1, sclk_pre_div = 1
-	{0x3500, 0x00}, // exposure H
-	{0x3501, 0x3d}, // exposure M
-	{0x3502, 0x00}, // exposure L
-	{0x3503, 0x04}, // gain no delay, use sensor gain
-	{0x3504, 0x03}, // exposure manual, gain manual
-	{0x3505, 0x83}, // sensor gain fixed bit
-	{0x3508, 0x07}, // gain H
-	{0x3509, 0x80}, // gain L
-	{0x350e, 0x04}, // short digital gain H
-	{0x350f, 0x00}, // short digital gain L
-	{0x3510, 0x00}, // short exposure H
-	{0x3511, 0x02}, // short exposure M
-	{0x3512, 0x00}, // short exposure L
-	{0x3601, 0xc8}, // analog control
+	{0x0312, 0x01},
+	{0x3031, 0x0a},
+};
+
+static const struct ov5670_reg mode_2592x1944_regs[] = {
+	{0x3000, 0x00},
+	{0x3002, 0x21},
+	{0x3005, 0xf0},
+	{0x3007, 0x00},
+	{0x3015, 0x0f},
+	{0x301a, 0xf0},
+	{0x301b, 0xf0},
+	{0x301c, 0xf0},
+	{0x301d, 0xf0},
+	{0x301e, 0xf0},
+	{0x3030, 0x00},
+	{0x3031, 0x0a},
+	{0x303c, 0xff},
+	{0x303e, 0xff},
+	{0x3040, 0xf0},
+	{0x3041, 0x00},
+	{0x3042, 0xf0},
+	{0x3106, 0x11},
+	{0x3500, 0x00},
+	{0x3501, 0x80},
+	{0x3502, 0x00},
+	{0x3503, 0x04},
+	{0x3504, 0x03},
+	{0x3505, 0x83},
+	{0x3508, 0x04},
+	{0x3509, 0x00},
+	{0x350e, 0x04},
+	{0x350f, 0x00},
+	{0x3510, 0x00},
+	{0x3511, 0x02},
+	{0x3512, 0x00},
+	{0x3601, 0xc8},
 	{0x3610, 0x88},
 	{0x3612, 0x48},
 	{0x3614, 0x5b},
@@ -213,10 +216,10 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x365e, 0xff},
 	{0x3668, 0x00},
 	{0x366a, 0x07},
-	{0x366e, 0x08},
+	{0x366e, 0x10},
 	{0x366d, 0x00},
-	{0x366f, 0x80}, // analog control
-	{0x3700, 0x28}, // sensor control
+	{0x366f, 0x80},
+	{0x3700, 0x28},
 	{0x3701, 0x10},
 	{0x3702, 0x3a},
 	{0x3703, 0x19},
@@ -254,38 +257,38 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x37b3, 0x66},
 	{0x37c2, 0x04},
 	{0x37c5, 0x00},
-	{0x37c8, 0x00}, // sensor control
-	{0x3800, 0x00}, // x addr start H
-	{0x3801, 0x0c}, // x addr start L
-	{0x3802, 0x00}, // y addr start H
-	{0x3803, 0x04}, // y addr start L
-	{0x3804, 0x0a}, // x addr end H
-	{0x3805, 0x33}, // x addr end L
-	{0x3806, 0x07}, // y addr end H
-	{0x3807, 0xa3}, // y addr end L
-	{0x3808, 0x05}, // x output size H
-	{0x3809, 0x10}, // x outout size L
-	{0x380a, 0x03}, // y output size H
-	{0x380b, 0xc0}, // y output size L
-	{0x380c, 0x06}, // HTS H
-	{0x380d, 0x8c}, // HTS L
-	{0x380e, 0x07}, // VTS H
-	{0x380f, 0xfd}, // VTS L
-	{0x3811, 0x04}, // ISP x win L
-	{0x3813, 0x02}, // ISP y win L
-	{0x3814, 0x03}, // x inc odd
-	{0x3815, 0x01}, // x inc even
-	{0x3816, 0x00}, // vsync start H
-	{0x3817, 0x00}, // vsync star L
-	{0x3818, 0x00}, // vsync end H
-	{0x3819, 0x00}, // vsync end L
-	{0x3820, 0x90}, // vsyn48_blc on, vflip off
-	{0x3821, 0x47}, // hsync_en_o, mirror on, dig_bin on
-	{0x3822, 0x48}, // addr0_num[3:1]=0x02, ablc_num[5:1]=0x08
-	{0x3826, 0x00}, // r_rst_fsin H
-	{0x3827, 0x08}, // r_rst_fsin L
-	{0x382a, 0x03}, // y inc odd
-	{0x382b, 0x01}, // y inc even
+	{0x37c8, 0x00},
+	{0x3800, 0x00},
+	{0x3801, 0x0c},
+	{0x3802, 0x00},
+	{0x3803, 0x04},
+	{0x3804, 0x0a},
+	{0x3805, 0x33},
+	{0x3806, 0x07},
+	{0x3807, 0xa3},
+	{0x3808, 0x0a},
+	{0x3809, 0x20},
+	{0x380a, 0x07},
+	{0x380b, 0x98},
+	{0x380c, 0x06},
+	{0x380d, 0x90},
+	{0x380e, 0x08},
+	{0x380f, 0x08},
+	{0x3811, 0x04},
+	{0x3813, 0x02},
+	{0x3814, 0x01},
+	{0x3815, 0x01},
+	{0x3816, 0x00},
+	{0x3817, 0x00},
+	{0x3818, 0x00},
+	{0x3819, 0x00},
+	{0x3820, 0x84},
+	{0x3821, 0x46},
+	{0x3822, 0x48},
+	{0x3826, 0x00},
+	{0x3827, 0x08},
+	{0x382a, 0x01},
+	{0x382b, 0x01},
 	{0x3830, 0x08},
 	{0x3836, 0x02},
 	{0x3837, 0x00},
@@ -297,11 +300,11 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x3863, 0x06},
 	{0x3a11, 0x01},
 	{0x3a12, 0x78},
-	{0x3b00, 0x00}, // strobe
+	{0x3b00, 0x00},
 	{0x3b02, 0x00},
 	{0x3b03, 0x00},
 	{0x3b04, 0x00},
-	{0x3b05, 0x00}, // strobe
+	{0x3b05, 0x00},
 	{0x3c00, 0x89},
 	{0x3c01, 0xab},
 	{0x3c02, 0x01},
@@ -324,13 +327,13 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x3c54, 0x71},
 	{0x3c56, 0x80},
 	{0x3d85, 0x17},
-	{0x3f03, 0x00}, // PSRAM
+	{0x3f03, 0x00},
 	{0x3f0a, 0x00},
-	{0x3f0b, 0x00}, // PSRAM
-	{0x4001, 0x60}, // BLC, K enable
-	{0x4009, 0x05}, // BLC, black line end line
-	{0x4020, 0x00}, // BLC, offset compensation th000
-	{0x4021, 0x00}, // BLC, offset compensation K000
+	{0x3f0b, 0x00},
+	{0x4001, 0x60},
+	{0x4009, 0x0d},
+	{0x4020, 0x00},
+	{0x4021, 0x00},
 	{0x4022, 0x00},
 	{0x4023, 0x00},
 	{0x4024, 0x00},
@@ -348,18 +351,282 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x4040, 0x00},
 	{0x4041, 0x03},
 	{0x4042, 0x00},
-	{0x4043, 0x7a},
+	{0x4043, 0x7A},
 	{0x4044, 0x00},
-	{0x4045, 0x7a},
+	{0x4045, 0x7A},
 	{0x4046, 0x00},
-	{0x4047, 0x7a},
-	{0x4048, 0x00}, // BLC, kcoef_r_man H
-	{0x4049, 0x80}, // BLC, kcoef_r_man L
-	{0x4303, 0x00},
+	{0x4047, 0x7A},
+	{0x4048, 0x00},
+	{0x4049, 0x7A},
 	{0x4307, 0x30},
 	{0x4500, 0x58},
 	{0x4501, 0x04},
 	{0x4502, 0x40},
+	{0x4503, 0x10},
+	{0x4508, 0xaa},
+	{0x4509, 0xaa},
+	{0x450a, 0x00},
+	{0x450b, 0x00},
+	{0x4600, 0x01},
+	{0x4601, 0x03},
+	{0x4700, 0xa4},
+	{0x4800, 0x4c},
+	{0x4816, 0x53},
+	{0x481f, 0x40},
+	{0x4837, 0x13},
+	{0x5000, 0x56},
+	{0x5001, 0x01},
+	{0x5002, 0x28},
+	{0x5004, 0x0c},
+	{0x5006, 0x0c},
+	{0x5007, 0xe0},
+	{0x5008, 0x01},
+	{0x5009, 0xb0},
+	{0x5901, 0x00},
+	{0x5a01, 0x00},
+	{0x5a03, 0x00},
+	{0x5a04, 0x0c},
+	{0x5a05, 0xe0},
+	{0x5a06, 0x09},
+	{0x5a07, 0xb0},
+	{0x5a08, 0x06},
+	{0x5e00, 0x00},
+	{0x3734, 0x40},
+	{0x5b00, 0x01},
+	{0x5b01, 0x10},
+	{0x5b02, 0x01},
+	{0x5b03, 0xdb},
+	{0x3d8c, 0x71},
+	{0x3d8d, 0xea},
+	{0x4017, 0x08},
+	{0x3618, 0x2a},
+	{0x5780, 0x3e},
+	{0x5781, 0x0f},
+	{0x5782, 0x44},
+	{0x5783, 0x02},
+	{0x5784, 0x01},
+	{0x5785, 0x01},
+	{0x5786, 0x00},
+	{0x5787, 0x04},
+	{0x5788, 0x02},
+	{0x5789, 0x0f},
+	{0x578a, 0xfd},
+	{0x578b, 0xf5},
+	{0x578c, 0xf5},
+	{0x578d, 0x03},
+	{0x578e, 0x08},
+	{0x578f, 0x0c},
+	{0x5790, 0x08},
+	{0x5791, 0x06},
+	{0x5792, 0x00},
+	{0x5793, 0x52},
+	{0x5794, 0xa3},
+	{0x3503, 0x00},
+	{0x5045, 0x05},
+	{0x4003, 0x40},
+	{0x5048, 0x40}
+};
+
+static const struct ov5670_reg mode_1296x972_regs[] = {
+	{0x3000, 0x00},
+	{0x3002, 0x21},
+	{0x3005, 0xf0},
+	{0x3007, 0x00},
+	{0x3015, 0x0f},
+	{0x301a, 0xf0},
+	{0x301b, 0xf0},
+	{0x301c, 0xf0},
+	{0x301d, 0xf0},
+	{0x301e, 0xf0},
+	{0x3030, 0x00},
+	{0x3031, 0x0a},
+	{0x303c, 0xff},
+	{0x303e, 0xff},
+	{0x3040, 0xf0},
+	{0x3041, 0x00},
+	{0x3042, 0xf0},
+	{0x3106, 0x11},
+	{0x3500, 0x00},
+	{0x3501, 0x80},
+	{0x3502, 0x00},
+	{0x3503, 0x04},
+	{0x3504, 0x03},
+	{0x3505, 0x83},
+	{0x3508, 0x07},
+	{0x3509, 0x80},
+	{0x350e, 0x04},
+	{0x350f, 0x00},
+	{0x3510, 0x00},
+	{0x3511, 0x02},
+	{0x3512, 0x00},
+	{0x3601, 0xc8},
+	{0x3610, 0x88},
+	{0x3612, 0x48},
+	{0x3614, 0x5b},
+	{0x3615, 0x96},
+	{0x3621, 0xd0},
+	{0x3622, 0x00},
+	{0x3623, 0x00},
+	{0x3633, 0x13},
+	{0x3634, 0x13},
+	{0x3635, 0x13},
+	{0x3636, 0x13},
+	{0x3645, 0x13},
+	{0x3646, 0x82},
+	{0x3650, 0x00},
+	{0x3652, 0xff},
+	{0x3655, 0x20},
+	{0x3656, 0xff},
+	{0x365a, 0xff},
+	{0x365e, 0xff},
+	{0x3668, 0x00},
+	{0x366a, 0x07},
+	{0x366e, 0x08},
+	{0x366d, 0x00},
+	{0x366f, 0x80},
+	{0x3700, 0x28},
+	{0x3701, 0x10},
+	{0x3702, 0x3a},
+	{0x3703, 0x19},
+	{0x3704, 0x10},
+	{0x3705, 0x00},
+	{0x3706, 0x66},
+	{0x3707, 0x08},
+	{0x3708, 0x34},
+	{0x3709, 0x40},
+	{0x370a, 0x01},
+	{0x370b, 0x1b},
+	{0x3714, 0x24},
+	{0x371a, 0x3e},
+	{0x3733, 0x00},
+	{0x3734, 0x00},
+	{0x373a, 0x05},
+	{0x373b, 0x06},
+	{0x373c, 0x0a},
+	{0x373f, 0xa0},
+	{0x3755, 0x00},
+	{0x3758, 0x00},
+	{0x375b, 0x0e},
+	{0x3766, 0x5f},
+	{0x3768, 0x00},
+	{0x3769, 0x22},
+	{0x3773, 0x08},
+	{0x3774, 0x1f},
+	{0x3776, 0x06},
+	{0x37a0, 0x88},
+	{0x37a1, 0x5c},
+	{0x37a7, 0x88},
+	{0x37a8, 0x70},
+	{0x37aa, 0x88},
+	{0x37ab, 0x48},
+	{0x37b3, 0x66},
+	{0x37c2, 0x04},
+	{0x37c5, 0x00},
+	{0x37c8, 0x00},
+	{0x3800, 0x00},
+	{0x3801, 0x0c},
+	{0x3802, 0x00},
+	{0x3803, 0x04},
+	{0x3804, 0x0a},
+	{0x3805, 0x33},
+	{0x3806, 0x07},
+	{0x3807, 0xa3},
+	{0x3808, 0x05},
+	{0x3809, 0x10},
+	{0x380a, 0x03},
+	{0x380b, 0xcc},
+	{0x380c, 0x06},
+	{0x380d, 0x90},
+	{0x380e, 0x08},
+	{0x380f, 0x08},
+	{0x3811, 0x04},
+	{0x3813, 0x04},
+	{0x3814, 0x03},
+	{0x3815, 0x01},
+	{0x3816, 0x00},
+	{0x3817, 0x00},
+	{0x3818, 0x00},
+	{0x3819, 0x00},
+	{0x3820, 0x94},
+	{0x3821, 0x47},
+	{0x3822, 0x48},
+	{0x3826, 0x00},
+	{0x3827, 0x08},
+	{0x382a, 0x03},
+	{0x382b, 0x01},
+	{0x3830, 0x08},
+	{0x3836, 0x02},
+	{0x3837, 0x00},
+	{0x3838, 0x10},
+	{0x3841, 0xff},
+	{0x3846, 0x48},
+	{0x3861, 0x00},
+	{0x3862, 0x04},
+	{0x3863, 0x06},
+	{0x3a11, 0x01},
+	{0x3a12, 0x78},
+	{0x3b00, 0x00},
+	{0x3b02, 0x00},
+	{0x3b03, 0x00},
+	{0x3b04, 0x00},
+	{0x3b05, 0x00},
+	{0x3c00, 0x89},
+	{0x3c01, 0xab},
+	{0x3c02, 0x01},
+	{0x3c03, 0x00},
+	{0x3c04, 0x00},
+	{0x3c05, 0x03},
+	{0x3c06, 0x00},
+	{0x3c07, 0x05},
+	{0x3c0c, 0x00},
+	{0x3c0d, 0x00},
+	{0x3c0e, 0x00},
+	{0x3c0f, 0x00},
+	{0x3c40, 0x00},
+	{0x3c41, 0xa3},
+	{0x3c43, 0x7d},
+	{0x3c45, 0xd7},
+	{0x3c47, 0xfc},
+	{0x3c50, 0x05},
+	{0x3c52, 0xaa},
+	{0x3c54, 0x71},
+	{0x3c56, 0x80},
+	{0x3d85, 0x17},
+	{0x3f03, 0x00},
+	{0x3f0a, 0x00},
+	{0x3f0b, 0x00},
+	{0x4001, 0x60},
+	{0x4009, 0x05},
+	{0x4020, 0x00},
+	{0x4021, 0x00},
+	{0x4022, 0x00},
+	{0x4023, 0x00},
+	{0x4024, 0x00},
+	{0x4025, 0x00},
+	{0x4026, 0x00},
+	{0x4027, 0x00},
+	{0x4028, 0x00},
+	{0x4029, 0x00},
+	{0x402a, 0x00},
+	{0x402b, 0x00},
+	{0x402c, 0x00},
+	{0x402d, 0x00},
+	{0x402e, 0x00},
+	{0x402f, 0x00},
+	{0x4040, 0x00},
+	{0x4041, 0x03},
+	{0x4042, 0x00},
+	{0x4043, 0x7A},
+	{0x4044, 0x00},
+	{0x4045, 0x7A},
+	{0x4046, 0x00},
+	{0x4047, 0x7A},
+	{0x4048, 0x00},
+	{0x4049, 0x7A},
+	{0x4307, 0x30},
+	{0x4500, 0x58},
+	{0x4501, 0x04},
+	{0x4502, 0x48},
 	{0x4503, 0x10},
 	{0x4508, 0x55},
 	{0x4509, 0x55},
@@ -368,38 +635,36 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x4600, 0x00},
 	{0x4601, 0x81},
 	{0x4700, 0xa4},
-	{0x4800, 0x4c}, // MIPI conrol
-	{0x4816, 0x53}, // emb_dt
-	{0x481f, 0x40}, // clock_prepare_min
-	{0x4837, 0x13}, // clock period of pclk2x
-	{0x5000, 0x56}, // awb_gain_en, bc_en, wc_en
-	{0x5001, 0x01}, // blc_en
-	{0x5002, 0x28}, // otp_dpc_en
-	{0x5004, 0x0c}, // ISP size auto control enable
+	{0x4800, 0x4c},
+	{0x4816, 0x53},
+	{0x481f, 0x40},
+	{0x4837, 0x13},
+	{0x5000, 0x56},
+	{0x5001, 0x01},
+	{0x5002, 0x28},
+	{0x5004, 0x0c},
 	{0x5006, 0x0c},
 	{0x5007, 0xe0},
 	{0x5008, 0x01},
 	{0x5009, 0xb0},
-	{0x5901, 0x00}, // VAP
-	{0x5a01, 0x00}, // WINC x start offset H
-	{0x5a03, 0x00}, // WINC x start offset L
-	{0x5a04, 0x0c}, // WINC y start offset H
-	{0x5a05, 0xe0}, // WINC y start offset L
-	{0x5a06, 0x09}, // WINC window width H
-	{0x5a07, 0xb0}, // WINC window width L
-	{0x5a08, 0x06}, // WINC window height H
-	{0x5e00, 0x00}, // WINC window height L
+	{0x5901, 0x00},
+	{0x5a01, 0x00},
+	{0x5a03, 0x00},
+	{0x5a04, 0x0c},
+	{0x5a05, 0xe0},
+	{0x5a06, 0x09},
+	{0x5a07, 0xb0},
+	{0x5a08, 0x06},
+	{0x5e00, 0x00},
+	{0x3734, 0x40},
+	{0x5b00, 0x01},
+	{0x5b01, 0x10},
+	{0x5b02, 0x01},
+	{0x5b03, 0xdb},
+	{0x3d8c, 0x71},
+	{0x3d8d, 0xea},
+	{0x4017, 0x10},
 	{0x3618, 0x2a},
-	//Ally031414
-	{0x3734, 0x40}, // Improve HFPN
-	{0x5b00, 0x01}, // [2:0] otp start addr[10:8]
-	{0x5b01, 0x10}, // [7:0] otp start addr[7:0]
-	{0x5b02, 0x01}, // [2:0] otp end addr[10:8]
-	{0x5b03, 0xDB}, // [7:0] otp end addr[7:0]
-	{0x3d8c, 0x71}, //Header address high byte
-	{0x3d8d, 0xEA}, //Header address low byte
-	{0x4017, 0x10}, //threshold = 4LSB for Binning sum format.
-	//Strong DPC1.53
 	{0x5780, 0x3e},
 	{0x5781, 0x0f},
 	{0x5782, 0x44},
@@ -421,69 +686,10 @@ static const struct ov5670_reg mipi_data_rate_840mbps[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
-	//Ping
-	{0x3503, 0x30}, // exposure gain/exposure delay not used
-	//added
-	{0x3d85, 0x17}, // OTP power up load data enable,
-	{0x3655, 0x20},
-};
-
-static const struct ov5670_reg mode_2592x1944_regs[] = {
-	{0x3501, 0x7b}, // exposore M
-	{0x3623, 0x00}, // analog control
-	{0x366e, 0x10}, // analog control
-	{0x370b, 0x1b}, // sensor control
-	{0x3808, 0x0a}, // x output size H
-	{0x3809, 0x20}, // x output size L
-	{0x380a, 0x07}, // y outout size H
-	{0x380b, 0x98}, // y output size L
-	{0x380c, 0x06}, // HTS H
-	{0x380d, 0x8c}, // HTS L
-	{0x380e, 0x07}, // VTS H
-	{0x380f, 0xfd}, // VTS L
-	{0x3814, 0x01}, // x inc odd
-	{0x3820, 0x80}, // vflip off
-	{0x3821, 0x46}, // hsync_en_o, mirror on, dig_bin off
-	{0x382a, 0x01}, // y inc odd
-	{0x4009, 0x0d}, // BLC, black line end line
-	{0x400a, 0x02}, // BLC, offset trigger threshold H
-	{0x400b, 0x00}, // BLC, offset trigger threshold L
-	{0x4502, 0x40}, //
-	{0x4508, 0xaa}, //
-	{0x4509, 0xaa}, //
-	{0x450a, 0x00}, //
-	{0x4600, 0x01}, //
-	{0x4601, 0x03}, //
-	{0x4017, 0x08}, // BLC, offset trigger threshold
-};
-
-static const struct ov5670_reg mode_1296x972_regs[] = {
-	{0x3501, 0x3d}, //exposure M
-	{0x3623, 0x00}, //analog control
-	{0x366e, 0x08}, //analog control
-	{0x370b, 0x1b}, //sensor control
-	{0x3808, 0x05}, //x output size H
-	{0x3809, 0x10}, //x output size L
-	{0x380a, 0x03}, //y outout size H
-	{0x380b, 0xcc}, //y output size L
-	{0x380c, 0x06}, //HTS H
-	{0x380d, 0x8c}, //HTS L
-	{0x380e, 0x07}, //VTS H
-	{0x380f, 0xfd}, //VTS L
-	{0x3814, 0x03}, //x inc odd
-	{0x3820, 0x90}, //vsyn48_blc on, vflip off
-	{0x3821, 0x47}, //hsync_en_o, mirror on, dig_bin on
-	{0x382a, 0x03}, //y inc odd
-	{0x4009, 0x05}, //BLC, black line end line
-	{0x400a, 0x02}, //BLC, offset trigger threshold H
-	{0x400b, 0x00}, //BLC, offset trigger threshold L
-	{0x4502, 0x44},
-	{0x4508, 0x55},
-	{0x4509, 0x55},
-	{0x450a, 0x00},
-	{0x4600, 0x00},
-	{0x4601, 0x81},
-	{0x4017, 0x10}, //BLC, offset trigger threshold
+	{0x3503, 0x00},
+	{0x5045, 0x05},
+	{0x4003, 0x40},
+	{0x5048, 0x40}
 };
 
 static const struct ov5670_reg mode_648x486_regs[] = {
@@ -1686,7 +1892,7 @@ struct ov5670 {
 
 /* Read registers up to 4 at a time */
 static int ov5670_read_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
-			 u32 *val)
+			   u32 *val)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 	struct i2c_msg msgs[2];
@@ -1722,7 +1928,7 @@ static int ov5670_read_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
 
 /* Write registers up to 4 at a time */
 static int ov5670_write_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
-			u32 val)
+			    u32 val)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 	int buf_i;
@@ -1753,7 +1959,7 @@ static int ov5670_write_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
 
 /* Write a list of registers */
 static int ov5670_write_regs(struct ov5670 *ov5670,
-			 const struct ov5670_reg *regs, unsigned int len)
+			     const struct ov5670_reg *regs, unsigned int len)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 	unsigned int i;
@@ -1785,12 +1991,12 @@ static int ov5670_update_digital_gain(struct ov5670 *ov5670, u32 d_gain)
 	int ret;
 
 	ret = ov5670_write_reg(ov5670, OV5670_REG_R_DGTL_GAIN,
-			 OV5670_REG_VALUE_16BIT, d_gain);
+			       OV5670_REG_VALUE_16BIT, d_gain);
 	if (ret)
 		return ret;
 
 	ret = ov5670_write_reg(ov5670, OV5670_REG_G_DGTL_GAIN,
-			 OV5670_REG_VALUE_16BIT, d_gain);
+			       OV5670_REG_VALUE_16BIT, d_gain);
 	if (ret)
 		return ret;
 
@@ -1805,12 +2011,12 @@ static int ov5670_enable_test_pattern(struct ov5670 *ov5670, u32 pattern)
 
 	/* Set the bayer order that we support */
 	ret = ov5670_write_reg(ov5670, OV5670_REG_TEST_PATTERN_CTRL,
-			 OV5670_REG_VALUE_08BIT, 0);
+			       OV5670_REG_VALUE_08BIT, 0);
 	if (ret)
 		return ret;
 
 	ret = ov5670_read_reg(ov5670, OV5670_REG_TEST_PATTERN,
-			OV5670_REG_VALUE_08BIT, &val);
+			      OV5670_REG_VALUE_08BIT, &val);
 	if (ret)
 		return ret;
 
@@ -1827,7 +2033,7 @@ static int ov5670_enable_test_pattern(struct ov5670 *ov5670, u32 pattern)
 static int ov5670_set_ctrl(struct v4l2_ctrl *ctrl)
 {
 	struct ov5670 *ov5670 = container_of(ctrl->handler,
-					 struct ov5670, ctrl_handler);
+					     struct ov5670, ctrl_handler);
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 	s64 max;
 	int ret;
@@ -1850,7 +2056,7 @@ static int ov5670_set_ctrl(struct v4l2_ctrl *ctrl)
 	switch (ctrl->id) {
 	case V4L2_CID_ANALOGUE_GAIN:
 		ret = ov5670_write_reg(ov5670, OV5670_REG_ANALOG_GAIN,
-				 OV5670_REG_VALUE_16BIT, ctrl->val);
+				       OV5670_REG_VALUE_16BIT, ctrl->val);
 		break;
 	case V4L2_CID_DIGITAL_GAIN:
 		ret = ov5670_update_digital_gain(ov5670, ctrl->val);
@@ -1858,13 +2064,13 @@ static int ov5670_set_ctrl(struct v4l2_ctrl *ctrl)
 	case V4L2_CID_EXPOSURE:
 		/* 4 least significant bits of expsoure are fractional part */
 		ret = ov5670_write_reg(ov5670, OV5670_REG_EXPOSURE,
-				 OV5670_REG_VALUE_24BIT, ctrl->val << 4);
+				       OV5670_REG_VALUE_24BIT, ctrl->val << 4);
 		break;
 	case V4L2_CID_VBLANK:
 		/* Update VTS that meets expected vertical blanking */
 		ret = ov5670_write_reg(ov5670, OV5670_REG_VTS,
-				 OV5670_REG_VALUE_16BIT,
-				 ov5670->cur_mode->height + ctrl->val);
+				       OV5670_REG_VALUE_16BIT,
+				       ov5670->cur_mode->height + ctrl->val);
 		break;
 	case V4L2_CID_TEST_PATTERN:
 		ret = ov5670_enable_test_pattern(ov5670, ctrl->val);
@@ -1913,9 +2119,9 @@ static int ov5670_init_controls(struct ov5670 *ov5670)
 
 	ctrl_hdlr->lock = &ov5670->mutex;
 	ov5670->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
-						 &ov5670_ctrl_ops,
-						 V4L2_CID_LINK_FREQ,
-						 0, 0, link_freq_menu_items);
+						   &ov5670_ctrl_ops,
+						   V4L2_CID_LINK_FREQ,
+						   0, 0, link_freq_menu_items);
 	if (ov5670->link_freq)
 		ov5670->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
 
@@ -1924,18 +2130,18 @@ static int ov5670_init_controls(struct ov5670 *ov5670)
 	mipi_pixel_rate = OV5670_LINK_FREQ_422MHZ * 2 * lanes_count / 10;
 
 	ov5670->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &ov5670_ctrl_ops,
-					 V4L2_CID_PIXEL_RATE,
-					 mipi_pixel_rate,
-					 mipi_pixel_rate,
-					 1,
-					 mipi_pixel_rate);
+					       V4L2_CID_PIXEL_RATE,
+					       mipi_pixel_rate,
+					       mipi_pixel_rate,
+					       1,
+					       mipi_pixel_rate);
 
 	vblank_max = OV5670_VTS_MAX - ov5670->cur_mode->height;
 	vblank_def = ov5670->cur_mode->vts_def - ov5670->cur_mode->height;
 	vblank_min = ov5670->cur_mode->vts_min - ov5670->cur_mode->height;
 	ov5670->vblank = v4l2_ctrl_new_std(ctrl_hdlr, &ov5670_ctrl_ops,
-					 V4L2_CID_VBLANK, vblank_min,
-					 vblank_max, 1, vblank_def);
+					   V4L2_CID_VBLANK, vblank_min,
+					   vblank_max, 1, vblank_def);
 
 	ov5670->hblank = v4l2_ctrl_new_std(
 				ctrl_hdlr, &ov5670_ctrl_ops, V4L2_CID_HBLANK,
@@ -1947,26 +2153,26 @@ static int ov5670_init_controls(struct ov5670 *ov5670)
 
 	/* Get min, max, step, default from sensor */
 	v4l2_ctrl_new_std(ctrl_hdlr, &ov5670_ctrl_ops, V4L2_CID_ANALOGUE_GAIN,
-			ANALOG_GAIN_MIN, ANALOG_GAIN_MAX, ANALOG_GAIN_STEP,
-			ANALOG_GAIN_DEFAULT);
+			  ANALOG_GAIN_MIN, ANALOG_GAIN_MAX, ANALOG_GAIN_STEP,
+			  ANALOG_GAIN_DEFAULT);
 
 	/* Digital gain */
 	v4l2_ctrl_new_std(ctrl_hdlr, &ov5670_ctrl_ops, V4L2_CID_DIGITAL_GAIN,
-			OV5670_DGTL_GAIN_MIN, OV5670_DGTL_GAIN_MAX,
-			OV5670_DGTL_GAIN_STEP, OV5670_DGTL_GAIN_DEFAULT);
+			  OV5670_DGTL_GAIN_MIN, OV5670_DGTL_GAIN_MAX,
+			  OV5670_DGTL_GAIN_STEP, OV5670_DGTL_GAIN_DEFAULT);
 
 	/* Get min, max, step, default from sensor */
 	exposure_max = ov5670->cur_mode->vts_def - 8;
 	ov5670->exposure = v4l2_ctrl_new_std(ctrl_hdlr, &ov5670_ctrl_ops,
-					 V4L2_CID_EXPOSURE,
-					 OV5670_EXPOSURE_MIN,
-					 exposure_max, OV5670_EXPOSURE_STEP,
-					 exposure_max);
+					     V4L2_CID_EXPOSURE,
+					     OV5670_EXPOSURE_MIN,
+					     exposure_max, OV5670_EXPOSURE_STEP,
+					     exposure_max);
 
 	v4l2_ctrl_new_std_menu_items(ctrl_hdlr, &ov5670_ctrl_ops,
-				 V4L2_CID_TEST_PATTERN,
-				 ARRAY_SIZE(ov5670_test_pattern_menu) - 1,
-				 0, 0, ov5670_test_pattern_menu);
+				     V4L2_CID_TEST_PATTERN,
+				     ARRAY_SIZE(ov5670_test_pattern_menu) - 1,
+				     0, 0, ov5670_test_pattern_menu);
 
 	if (ctrl_hdlr->error) {
 		ret = ctrl_hdlr->error;
@@ -1978,7 +2184,7 @@ static int ov5670_init_controls(struct ov5670 *ov5670)
 		goto error;
 
 	ret = v4l2_ctrl_new_fwnode_properties(ctrl_hdlr, &ov5670_ctrl_ops,
-					&props);
+					      &props);
 	if (ret)
 		goto error;
 
@@ -1993,7 +2199,7 @@ error:
 }
 
 static int ov5670_init_cfg(struct v4l2_subdev *sd,
-			 struct v4l2_subdev_state *state)
+			   struct v4l2_subdev_state *state)
 {
 	struct v4l2_mbus_framefmt *fmt =
 				v4l2_subdev_get_try_format(sd, state, 0);
@@ -2028,8 +2234,8 @@ static int ov5670_enum_mbus_code(struct v4l2_subdev *sd,
 }
 
 static int ov5670_enum_frame_size(struct v4l2_subdev *sd,
-				struct v4l2_subdev_state *sd_state,
-				struct v4l2_subdev_frame_size_enum *fse)
+				  struct v4l2_subdev_state *sd_state,
+				  struct v4l2_subdev_frame_size_enum *fse)
 {
 	if (fse->index >= ARRAY_SIZE(supported_modes))
 		return -EINVAL;
@@ -2046,7 +2252,7 @@ static int ov5670_enum_frame_size(struct v4l2_subdev *sd,
 }
 
 static void ov5670_update_pad_format(const struct ov5670_mode *mode,
-				 struct v4l2_subdev_format *fmt)
+				     struct v4l2_subdev_format *fmt)
 {
 	fmt->format.width = mode->width;
 	fmt->format.height = mode->height;
@@ -2055,13 +2261,13 @@ static void ov5670_update_pad_format(const struct ov5670_mode *mode,
 }
 
 static int ov5670_do_get_pad_format(struct ov5670 *ov5670,
-				struct v4l2_subdev_state *sd_state,
-				struct v4l2_subdev_format *fmt)
+				    struct v4l2_subdev_state *sd_state,
+				    struct v4l2_subdev_format *fmt)
 {
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY)
 		fmt->format = *v4l2_subdev_get_try_format(&ov5670->sd,
-							sd_state,
-							fmt->pad);
+							  sd_state,
+							  fmt->pad);
 	else
 		ov5670_update_pad_format(ov5670->cur_mode, fmt);
 
@@ -2101,9 +2307,9 @@ static int ov5670_set_pad_format(struct v4l2_subdev *sd,
 	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
 
 	mode = v4l2_find_nearest_size(supported_modes,
-				ARRAY_SIZE(supported_modes),
-				width, height,
-				fmt->format.width, fmt->format.height);
+				      ARRAY_SIZE(supported_modes),
+				      width, height,
+				      fmt->format.width, fmt->format.height);
 	ov5670_update_pad_format(mode, fmt);
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY) {
 		*v4l2_subdev_get_try_format(sd, sd_state, fmt->pad) = fmt->format;
@@ -2120,7 +2326,7 @@ static int ov5670_set_pad_format(struct v4l2_subdev *sd,
 			mipi_pixel_rate);
 		/* Update limits and set FPS to default */
 		vblank_def = ov5670->cur_mode->vts_def -
-			 ov5670->cur_mode->height;
+			     ov5670->cur_mode->height;
 		__v4l2_ctrl_modify_range(
 			ov5670->vblank,
 			ov5670->cur_mode->vts_min - ov5670->cur_mode->height,
@@ -2155,7 +2361,7 @@ static int ov5670_identify_module(struct ov5670 *ov5670)
 		return 0;
 
 	ret = ov5670_read_reg(ov5670, OV5670_REG_CHIP_ID,
-			OV5670_REG_VALUE_24BIT, &val);
+			      OV5670_REG_VALUE_24BIT, &val);
 	if (ret)
 		return ret;
 
@@ -2197,7 +2403,7 @@ static int ov5670_start_streaming(struct ov5670 *ov5670)
 
 	/* Get out of from software reset */
 	ret = ov5670_write_reg(ov5670, OV5670_REG_SOFTWARE_RST,
-			 OV5670_REG_VALUE_08BIT, OV5670_SOFTWARE_RST);
+			       OV5670_REG_VALUE_08BIT, OV5670_SOFTWARE_RST);
 	if (ret) {
 		dev_err(&client->dev, "%s failed to set powerup registers\n",
 			__func__);
@@ -2233,7 +2439,7 @@ static int ov5670_start_streaming(struct ov5670 *ov5670)
 
 	/* Write stream on list */
 	ret = ov5670_write_reg(ov5670, OV5670_REG_MODE_SELECT,
-			 OV5670_REG_VALUE_08BIT, OV5670_MODE_STREAMING);
+			       OV5670_REG_VALUE_08BIT, OV5670_MODE_STREAMING);
 	if (ret) {
 		dev_err(&client->dev, "%s failed to set stream\n", __func__);
 		return ret;
@@ -2248,7 +2454,7 @@ static int ov5670_stop_streaming(struct ov5670 *ov5670)
 	int ret;
 
 	ret = ov5670_write_reg(ov5670, OV5670_REG_MODE_SELECT,
-			 OV5670_REG_VALUE_08BIT, OV5670_MODE_STANDBY);
+			       OV5670_REG_VALUE_08BIT, OV5670_MODE_STANDBY);
 	if (ret)
 		dev_err(&client->dev, "%s failed to set stream\n", __func__);
 
@@ -2371,7 +2577,7 @@ static const struct v4l2_subdev_core_ops ov5670_core_ops = {
 
 static const struct v4l2_rect *
 __ov5670_get_pad_crop(struct ov5670 *sensor, struct v4l2_subdev_state *state,
-		unsigned int pad, enum v4l2_subdev_format_whence which)
+		      unsigned int pad, enum v4l2_subdev_format_whence which)
 {
 	const struct ov5670_mode *mode = sensor->cur_mode;
 
@@ -2453,7 +2659,7 @@ static int ov5670_regulators_probe(struct ov5670 *ov5670)
 		ov5670->supplies[i].supply = ov5670_supply_names[i];
 
 	return devm_regulator_bulk_get(&client->dev, OV5670_NUM_SUPPLIES,
-				 ov5670->supplies);
+				       ov5670->supplies);
 }
 
 static int ov5670_gpio_probe(struct ov5670 *ov5670)
@@ -2461,12 +2667,12 @@ static int ov5670_gpio_probe(struct ov5670 *ov5670)
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 
 	ov5670->pwdn_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
-						GPIOD_OUT_LOW);
+						    GPIOD_OUT_LOW);
 	if (IS_ERR(ov5670->pwdn_gpio))
 		return PTR_ERR(ov5670->pwdn_gpio);
 
 	ov5670->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-						 GPIOD_OUT_LOW);
+						     GPIOD_OUT_LOW);
 	if (IS_ERR(ov5670->reset_gpio))
 		return PTR_ERR(ov5670->reset_gpio);
 
@@ -2493,7 +2699,7 @@ static int ov5670_probe(struct i2c_client *client)
 					 &input_clk);
 	else
 		return dev_err_probe(&client->dev, PTR_ERR(ov5670->xvclk),
-				 "error getting clock\n");
+				     "error getting clock\n");
 
 	if (input_clk != OV5670_XVCLK_FREQ) {
 		dev_err(&client->dev,
@@ -2553,7 +2759,7 @@ static int ov5670_probe(struct i2c_client *client)
 	}
 
 	ov5670->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
-			V4L2_SUBDEV_FL_HAS_EVENTS;
+			    V4L2_SUBDEV_FL_HAS_EVENTS;
 	ov5670->sd.entity.ops = &ov5670_subdev_entity_ops;
 	ov5670->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
 
