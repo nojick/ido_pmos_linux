@@ -399,10 +399,10 @@ ports {
 };
 
 &cci_i2c0 {
-	camera-sensor@10 { // Primary front camera
+	camera-sensor@36 { // Primary front camera
 		compatible = "ovti,ov5670";
 		
-		reg = <0x10>;
+		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		clock-names = "xvclk";
@@ -411,8 +411,8 @@ ports {
 
 		pinctrl-0 = <&camera_front_default>, <&cam_sensor_mclk1>;
 		pinctrl-names = "default";
-		powerdown = <&tlmm 33 GPIO_ACTIVE_LOW>;
-		reset = <&tlmm 28 GPIO_ACTIVE_LOW>;
+		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
 
 		dovdd-supply = <&pm8916_l6>;
 		avdd-supply = <&pm8916_l17>;
