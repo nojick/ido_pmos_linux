@@ -384,10 +384,11 @@ ports {
 	status = "okay";
 
 	ports {
-		port@0 {
-			reg = <0>;
-			csiphy0_ep: endpoint {
-				data-lanes = <1 2>;
+		port@1 {
+			reg = <1>;
+			csiphy1_ep: endpoint {
+				clock-lanes = <1>;
+				data-lanes = <0 2>;
 				remote-endpoint = <&ov5670>;
 			};
 		};
@@ -399,17 +400,16 @@ ports {
 };
 
 &cci_i2c0 {
+
 	camera-sensor@36 { // Primary front camera
 		compatible = "ovti,ov5670";
 		
 		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		clock-names = "xvclk";
 		clock-frequency = <19200000>;
-		clock-rates = <19200000>;
 
-		pinctrl-0 = <&camera_front_default>, <&cam_sensor_mclk1>;
+		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
@@ -424,12 +424,11 @@ ports {
 		port {
 			ov5670: endpoint {
 				data-lanes = <1 2>;
-				link-frequencies = /bits/ 64 <360000000>;
-				remote-endpoint = <&csiphy0_ep>;
+				link-frequencies = /bits/ 64 <450000000>;
+				remote-endpoint = <&csiphy1_ep>;
 			};
 		};
 	};
-
 };
 
 &gpu {
@@ -660,14 +659,6 @@ ports {
 	cam_vdig_default: cam-vdig-default-state {
 		pins = "gpio17";
 		function = "gpio";
-
-		drive-strength = <2>;
-		bias-disable;
-	};
-
-	cam_sensor_mclk1: cam-sensor-mclk1 {
-		pins = "gpio27";
-		function = "cam_mclk1";
 
 		drive-strength = <2>;
 		bias-disable;
