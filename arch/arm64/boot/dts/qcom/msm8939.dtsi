@@ -983,6 +983,13 @@
 					drive-strength = <16>;
 					bias-disable;
 				};
+
+				mclk1-pins {
+					pins = "gpio27";
+					function = "cam_mclk1";
+					drive-strength = <16>;
+					bias-disable;
+				};
 			};
 
 			camera_rear_default: camera-rear-default-state {
