@@ -388,7 +388,7 @@ ports {
 			reg = <1>;
 			csiphy1_ep: endpoint {
 				clock-lanes = <1>;
-				data-lanes = <0 1>;
+                                data-lanes = <0 2>;
 				remote-endpoint = <&ov5670>;
 			};
 		};
@@ -407,7 +407,6 @@ ports {
 		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		clock-names = "xvclk";
 
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
@@ -423,7 +422,7 @@ ports {
 
 		port {
 			ov5670: endpoint {
-				data-lanes = <0 1>;
+				data-lanes = <1 2>;
 				link-frequencies = /bits/ 64 <360000000>;
 				remote-endpoint = <&csiphy1_ep>;
 			};
