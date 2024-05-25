@@ -413,7 +413,7 @@ ports {
 		//assigned-clock-rates = <23880000>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
-		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_HIGH>;
+		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
 
 		dovdd-supply = <&pm8916_l6>;
