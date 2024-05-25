@@ -406,12 +406,13 @@ ports {
 		
 		reg = <0x36>;
 
-		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-
+		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
+		assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+		assigned-clock-rates = <23880000>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
-		powerdown-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
-		reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
+		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 
 		dovdd-supply = <&pm8916_l6>;
 		avdd-supply = <&pm8916_l17>;
@@ -422,8 +423,7 @@ ports {
 
 		port {
 			ov5670: endpoint {
-				data-lanes = <1 2>;
-				link-frequencies = /bits/ 64 <360000000>;
+				data-lanes = <0 2>;
 				remote-endpoint = <&csiphy1_ep>;
 			};
 		};
