@@ -1,0 +1,744 @@
+// SPDX-License-Identifier: GPL-2.0-only
+
+/dts-v1/;
+
+#include "msm8939-pm8916.dtsi"
+#include "msm8916-modem-qdsp6.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
+#include <dt-bindings/leds/common.h>
+#include <dt-bindings/power/summit,smb347-charger.h>
+
+/ {
+	model = "Xiaomi Redmi 3";
+	compatible = "xiaomi,ido", "qcom,msm8939", "qcom,msm8939-qrd-skuk", "qcom,qrd";
+	chassis-type = "handset";
+	qcom,msm-id = <239 0>;
+	qcom,board-id = <0x1000b 11>, <0x2000b 11>;
+
+	aliases {
+		mmc0 = &sdhc_1; /* eMMC */
+		mmc1 = &sdhc_2; /* SD card */
+		serial0 = &blsp_uart2;
+	};
+
+	/* AW8736 */
+	speaker_amp: audio-amplifier {
+		compatible = "simple-audio-amplifier";
+
+		pinctrl-0 = <&spk_ext_default>;
+		pinctrl-names = "default";
+
+		enable-gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
+		awinic,mode = <3>;
+		sound-name-prefix = "Speaker Amp";
+	};
+
+	headphones_switch: audio-switch {
+		compatible = "simple-audio-amplifier";
+
+		pinctrl-0 = <&headphones_switch_default>;
+		pinctrl-names = "default";
+
+		enable-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
+		sound-name-prefix = "Headphones Switch";
+	};
+
+
+	chosen {
+		stdout-path = "serial0";
+/*
+		bootargs = "earlycon=tty0 console=tty0";
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		framebuffer0: framebuffer@83003000 {
+			status= "okay";
+			compatible = "simple-framebuffer";
+			reg = <0x0 0x83200000 0x0 0x2000000>;
+			width = <720>;
+			height = <1280>;
+			stride = <(720 * 3)>;
+			format = "r8g8b8";
+		};*/
+
+	};
+
+    reserved-memory {
+		/delete-node/ tz-apps@86000000;
+/*
+		cont_splash_mem: framebuffer@83000000 {
+			compatible = "removed-dma-pool";
+			reg = <0x0 0x83000000 0x0 0x2000000>;
+			no-map;
+		};*/
+        tz-apps@8c400000 {
+			reg = <0x0 0x8c400000 0x0 0x1900000>;
+			no-map;
+		};
+	};
+
+    gpio-keys {
+		compatible = "gpio-keys";
+
+		pinctrl-names = "default";
+
+		label = "GPIO Buttons";
+
+		volume-up {
+			label = "Volume Up";
+			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_VOLUMEUP>;
+		};
+	};
+
+	reg_cam_vdig: regulator-cam-vdig {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_vdig";
+		startup-delay-us = <0>;
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		enable-active-high;
+		gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&cam_vdig_default>;
+		pinctrl-names = "default";
+	};
+
+    battery: battery-cell {
+        compatible = "simple-battery";
+        charge-full-design-microamp-hours = <4000000>;
+        over-voltage-threshold-microvolt = <4400000>;
+	voltage-max-design-microvolt = <4400000>;
+	voltage-min-design-microvolt = <3400000>;
+	constant-charge-current-max-microamp = <1800000>;
+	operating-range-celsius = <0 45>;
+        alert-celsius = <3 42>;
+	ocv-capacity-celsius = <25>;
+	ocv-capacity-table-0 = <4380000 100>, <4292000 95>,
+			<4234000 90>, <4190000 85>, <4158000 80>, <4125000 75>,
+			<4090000 70>, <4040000 65>, <3988000 60>, <3950000 55>,
+			<3925000 50>, <3880000 45>, <3840000 40>, <3800000 35>,
+			<3784000 30>, <3761000 25>, <3743000 20>, <3722000 16>,
+			<3702000 13>, <3690000 11>, <3688000 10>, <3687000 9>,
+			<3685000 8>, <3683000 7>, <3677000 6>, <3656000 5>,
+			<3612000 4>, <3554000 3>, <3462000 2>, <3322000 1>,
+			<3000000 0>;
+    };
+
+    usb_id: usb-id {
+		compatible = "linux,extcon-usb-gpio";
+		id-gpio = <&tlmm 110 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&usb_id_default>;
+	};
+
+    backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pm8916_pwm 0 100000>;
+
+		brightness-levels = <0 255>;
+		num-interpolated-steps = <255>;
+		default-brightness-level = <255>;
+	};
+};
+
+&blsp_uart2 {
+	status = "okay";
+};
+
+&blsp_i2c2 {
+	status = "okay";
+
+	tps65132@3e {
+		compatible = "ti,tps65132";
+		reg = <0x3e>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&tps65132_en_default>;
+
+		reg_lcd_pos: outp {
+			regulator-name = "outp";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			enable-gpios = <&tlmm 97 GPIO_ACTIVE_HIGH>;
+			regulator-active-discharge = <1>;
+		};
+
+		reg_lcd_neg: outn {
+			regulator-name = "outn";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			enable-gpios = <&tlmm 98 GPIO_ACTIVE_HIGH>;
+			regulator-active-discharge = <1>;
+		};
+	};
+
+		bma253@18 {
+		compatible = "bosch,bma253";
+		reg = <0x18>;
+		pinctrl-names = "default","sleep";
+		pinctrl-0 = <&bma2x2_int1_default &bma2x2_int2_default>;
+		pinctrl-1 = <&bma2x2_int1_sleep &bma2x2_int2_sleep>;
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l6>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <112 IRQ_TYPE_EDGE_RISING>;
+		mount-matrix = "-1",  "0", "0",
+			       "0", "1", "0",
+			       "0",  "0", "1";
+        };
+   
+        light-sensor@23 {
+		compatible = "liteon,ltr559";
+		reg = <0x23>;
+
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l6>;
+		proximity-near-level = <75>;
+
+		interrupt-parent = <&tlmm>;
+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+
+		pinctrl-0 = <&alsps_default>;
+		pinctrl-1 = <&alsps_sleep>;
+		pinctrl-names = "default","sleep";
+	};
+
+	akm@c {
+		compatible = "asahi-kasei,ak09911";
+		reg = <0x0c>;
+
+		vdd-supply = <&pm8916_l17>;
+		vid-supply = <&pm8916_l6>;
+		mount-matrix = "0", "1", "0",
+			      "-1", "0", "0",
+			       "0", "0", "1";
+	};
+	
+	yamaha@2e {
+		compatible = "yamaha,yas537";
+		reg = <0x2e>;
+		vdd-supply = <&pm8916_l17>;
+		iovdd-supply = <&pm8916_l6>;
+		mount-matrix =  "1",  "0",  "0",
+				"1",  "0",  "0",
+				"0",  "0", "-1";
+	};
+	
+	mpu6050: mpu6050@68 {
+		compatible = "invensense,mpu6050";
+		reg = <0x68>;
+
+		interrupt-parent = <&tlmm>;
+		interrupts = <64 IRQ_TYPE_EDGE_RISING>;
+		mount-matrix = "0", "1", "0",
+			       "1", "0", "0",
+			       "0", "0", "1";
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l6>;
+		pinctrl-0 = <&mpu6050_default>;
+		pinctrl-1 = <&mpu6050_sleep>;
+		pinctrl-names = "default","sleep";
+	};
+};
+
+&blsp_i2c4 {
+
+	status = "okay";
+
+	power_supply: charger@57 {
+		compatible = "summit,smb358";
+		reg = <0x57>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <62 IRQ_TYPE_LEVEL_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&smb_int_default>;	
+		summit,enable-charge-control = <SMB3XX_CHG_ENABLE_PIN_ACTIVE_HIGH>;
+		summit,soft-compensation-method = <SMB3XX_SOFT_TEMP_COMPENSATE_CURRENT>;
+            	summit,chip-temperature-threshold-celsius = <100>;
+            	summit,usb-current-limit-microamp = <500000>;
+            	summit,enable-usb-charging;
+		monitored-battery = <&battery>;
+
+		usb_vbus: usb-vbus {
+			regulator-name = "usb_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			regulator-min-microamp = <500000>;
+			regulator-max-microamp = <500000>;
+	};
+};
+	cw2015@62 {
+		compatible = "cellwise,cw2015";
+		reg = <0x62>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <120 IRQ_TYPE_LEVEL_LOW>;
+		cellwise,monitor-interval-ms = <1000>;
+		vdd-supply = <&pm8916_l17>;
+		vcc_i2c-supply = <&pm8916_l6>;
+		monitored-battery = <&battery>;
+		power-supplies = <&power_supply>;
+		};
+};
+
+&blsp_i2c5 {
+	status = "okay";
+
+	touchscreen@3e {
+		/* actually FT5336 */
+		compatible = "edt,edt-ft5306";
+		reg = <0x3e>;
+
+		interrupt-parent = <&tlmm>;
+		interrupts = <13 0x2008>;
+
+		vcc-supply = <&pm8916_l17>;
+		iovcc-supply = <&pm8916_l6>;
+
+		reset-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
+
+		touchscreen-size-x = <720>;
+		touchscreen-size-y = <1280>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&touchscreen_default>;
+	};
+};
+
+&blsp_i2c6 {
+	status = "okay";
+
+	led-controller@45 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		compatible = "awinic,aw2013";
+
+		reg = <0x45>;
+		vcc-supply = <&pm8916_l16>;
+		vio-supply = <&pm8916_l16>;
+		led@0 {
+			reg = <0>;
+			led-max-microamp = <5000>;
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_RED>;
+		};
+		led@1 {
+			reg = <1>;
+			led-max-microamp = <5000>;
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_GREEN>;
+		};
+		led@2 {
+			reg = <2>;
+			led-max-microamp = <5000>;
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_BLUE>;
+		};
+	};
+};
+
+&mdss_dsi0 {
+	status = "okay";
+	vdda-supply = <&pm8916_l2>;
+	vddio-supply = <&pm8916_l6>;
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&mdss_default>;
+	pinctrl-1 = <&mdss_sleep>;
+
+panel: panel@0 {		
+		compatible = "xiaomi,ido-panel";
+		reg = <0>;
+		
+		power-supply = <&pm8916_l17>;
+		backlight = <&backlight>;
+		vsp-supply = <&reg_lcd_pos>;
+		vsn-supply = <&reg_lcd_neg>;
+		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
+ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			panel_in: endpoint {
+				remote-endpoint = <&mdss_dsi0_out>;
+				};
+			};
+		};
+	};
+};
+&mdss_dsi0_out {
+	data-lanes = <0 1 2 3>;
+	remote-endpoint = <&panel_in>;
+};
+
+&mdss_dsi0_phy {
+	status = "okay";
+	qcom,dsi-phy-regulator-ldo-mode;
+};
+
+&camss {
+	vdda-supply = <&pm8916_l2>;
+	status = "okay";
+
+	ports {
+		port@1 {
+			reg = <1>;
+			csiphy1_ep: endpoint {
+				clock-lanes = <1>;
+                                data-lanes = <0 2>;
+				remote-endpoint = <&ov5670>;
+			};
+		};
+	};
+};
+
+&cci {
+	status = "okay";
+};
+
+&cci_i2c0 {
+
+	camera-sensor@36 { // Primary front camera
+		compatible = "ovti,ov5670";
+		
+		reg = <0x36>;
+
+		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+		clock-names = "xvclk";
+		clock-frequency = <24000000>;
+		//assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+		//assigned-clock-rates = <23880000>;
+		pinctrl-0 = <&camera_front_default>;
+		pinctrl-names = "default";
+		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
+		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
+		
+
+		dovdd-supply = <&pm8916_l6>;
+		avdd-supply = <&pm8916_l17>;
+		dvdd-supply = <&reg_cam_vdig>;
+		status = "okay";
+
+		orientation = <0>;
+
+		port {
+			ov5670: endpoint {
+				data-lanes = <0 1>;
+				remote-endpoint = <&csiphy1_ep>;
+			};
+		};
+	};
+};
+
+&gpu {
+	status = "okay";
+};
+
+&mdss {
+	status = "okay";
+};
+
+&mpss_mem {
+	reg = <0x0 0x86800000 0x0 0x05600000>;
+};
+
+&pm8916_pwm {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm_out>;
+};
+
+&pm8916_resin {
+	status = "okay";
+	linux,code = <KEY_VOLUMEDOWN>;
+};
+
+&pm8916_vib {
+	status = "okay";
+};
+
+&wcnss {
+	status = "okay";
+};
+
+&wcnss_mem {
+	status = "okay";
+};
+
+&wcnss_iris {
+	compatible = "qcom,wcn3620";
+};
+
+&sdhc_1 {
+	status = "okay";
+};
+
+&sdhc_2 {
+	status = "okay";
+
+	pinctrl-0 = <&sdc2_default &sdc2_cd_default>;
+	pinctrl-1 = <&sdc2_sleep &sdc2_cd_default>;
+	pinctrl-names = "default", "sleep";
+
+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
+};
+
+&sound {
+	status = "okay";
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&cdc_pdm_default>;
+	pinctrl-1 = <&cdc_pdm_sleep>;
+
+	model = "xiaomi-ido";
+	widgets = 
+		"Speaker", "Speaker",
+		"Headphone", "Headphones";
+	pin-switches = "Speaker", "Headphones";
+	audio-routing =
+		"Speaker", "Speaker Amp OUTL",
+		"Speaker", "Speaker Amp OUTR",
+		"Speaker Amp INL", "HPH_R",
+		"Speaker Amp INR", "HPH_R",
+		"Headphones", "Headphones Switch OUTL",
+		"Headphones", "Headphones Switch OUTR",
+		"Headphones Switch INL", "HPH_L",
+		"Headphones Switch INR", "HPH_R",
+		"AMIC1", "MIC BIAS External1",
+		"AMIC2", "MIC BIAS Internal2",
+		"AMIC3", "MIC BIAS External1";
+	aux-devs = <&speaker_amp>, <&headphones_switch>;
+};
+
+&pm8916_codec {
+	qcom,micbias-lvl = <2800>;
+	qcom,mbhc-vthreshold-low = <25 200 325 375 430>;
+	qcom,mbhc-vthreshold-high = <75 225 400 410 450>;
+	qcom,micbias1-ext-cap;
+	qcom,hphl-jack-type-normally-open;
+	status = "okay";
+};
+
+&usb {
+	status = "okay";
+	extcon = <&usb_id>, <&usb_id>;
+	vbus-supply = <&usb_vbus>;
+};
+
+&usb_hs_phy {
+	extcon = <&usb_id>;
+};
+
+
+&pm8916_rpm_regulators {
+		l1 {
+			regulator-min-microvolt = <1225000>;
+			regulator-max-microvolt = <1225000>;
+		};
+
+		pm8916_l4: l4 {
+			regulator-min-microvolt = <2050000>;
+			regulator-max-microvolt = <2050000>;
+		};
+
+		pm8916_l10: l10 {
+			regulator-min-microvolt = <2700000>;
+			regulator-max-microvolt = <2800000>;
+		};
+
+		pm8916_l14: l14 {
+			regulator-min-microvolt = <1800000>;
+			regulator-max-microvolt = <3300000>;
+		};
+
+		pm8916_l15: l15 {
+			regulator-min-microvolt = <1800000>;
+			regulator-max-microvolt = <3300000>;
+		};
+
+		pm8916_l16: l16 {
+			regulator-min-microvolt = <2600000>;
+			regulator-max-microvolt = <2600000>;
+		};
+
+		pm8916_l17: l17 {
+			regulator-min-microvolt = <2850000>;
+			regulator-max-microvolt = <2850000>;
+            regulator-always-on;
+		};
+
+		pm8916_l18: l18 {
+			regulator-min-microvolt = <2700000>;
+			regulator-max-microvolt = <2700000>;
+		};
+	};
+
+&tlmm {
+	usb_id_default: usb-id-default {
+		pins = "gpio110";
+		function = "gpio";
+
+		drive-strength = <8>;
+		bias-pull-up;
+	};
+
+	headphones_switch_default: headphones-switch-default-state {
+		pins = "gpio8";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	spk_ext_default: spk-ext-default-state {
+		pins = "gpio121";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	smb_int_default: smb-int-default-state {
+		pins = "gpio62";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-pull-up;
+	};
+
+    mdss {
+		mdss_default: mdss-default {
+			pins = "gpio25";
+			function = "gpio";
+
+			drive-strength = <8>;
+			bias-disable;
+		};
+		mdss_sleep: mdss-sleep {
+			pins = "gpio25";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+	};
+
+	bma2x2_int1_pin {
+		bma2x2_int1_default: int1_default {
+			pins = "gpio112";
+			function = "gpio";
+
+			drive-strength = <6>;
+			bias-pull-up;
+		};
+		bma2x2_int1_sleep: int1_sleep {
+			pins = "gpio112";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+	};
+
+	bma2x2_int2_pin {
+		bma2x2_int2_default: int2_default {
+			pins = "gpio114";
+			function = "gpio";
+
+			drive-strength = <6>;
+			bias-pull-up;
+		};
+		bma2x2_int2_sleep: int2_sleep {
+			pins = "gpio114";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+	};
+
+	cam_vdig_default: cam-vdig-default-state {
+		pins = "gpio17";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	ltr559_int_pin {
+		alsps_default: alsps_default {
+			pins = "gpio113";
+			function = "gpio";
+
+			drive-strength = <6>;
+			bias-pull-up;
+		};
+		alsps_sleep: alsps_sleep {
+			pins = "gpio113";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+};
+
+	mpu6050_int_pin {
+		mpu6050_default: mpu6050_default {
+			pins = "gpio115";
+			function = "gpio";
+
+			drive-strength = <6>;
+			bias-pull-up;
+		};
+		mpu6050_sleep: mpu6050_sleep {
+			pins = "gpio115";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+	};
+
+    touchscreen_default: touchscreen-default {
+		pins = "gpio13";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-pull-up;
+
+		reset {
+			pins = "gpio12";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-disable;
+		};
+	};
+
+    tps65132_en_default: tps65132-en-default {
+		pins = "gpio97", "gpio98";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	sdc2_cd_default: sdc2-cd-default-state {
+		pins = "gpio38";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};
+
+&pm8916_mpps {
+	pwm_out: mpp4 {
+		pins = "mpp4";
+		function = "digital";
+
+		output-low;
+		qcom,dtest = <1>;
+		power-source = <PM8916_MPP_VPH>;
+	};
+};
