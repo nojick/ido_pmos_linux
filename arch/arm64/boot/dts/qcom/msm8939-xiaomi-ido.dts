@@ -414,7 +414,7 @@ ports {
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
-		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
+		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
 		
 
 		dovdd-supply = <&pm8916_l6>;
