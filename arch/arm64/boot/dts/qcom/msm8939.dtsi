@@ -1433,14 +1433,13 @@
 		};
 
 		camss: camss@1b0ac00 {
-			compatible = "qcom,msm8939-camss";
+			compatible = "qcom,msm8916-camss";
 			reg = <0x01b0ac00 0x200>,
 				<0x01b00030 0x4>,
 				<0x01b0b000 0x200>,
 				<0x01b00038 0x4>,
 				<0x01b08000 0x100>,
 				<0x01b08400 0x100>,
-				<0x01b08800 0x100>,
 				<0x01b0a000 0x500>,
 				<0x01b00020 0x10>,
 				<0x01b10000 0x1000>;
@@ -1450,7 +1449,6 @@
 				"csiphy1_clk_mux",
 				"csid0",
 				"csid1",
-				"csid2",
 				"ispif",
 				"csi_clk_mux",
 				"vfe0";
@@ -1458,14 +1456,12 @@
 				<GIC_SPI 79 IRQ_TYPE_EDGE_RISING>,
 				<GIC_SPI 51 IRQ_TYPE_EDGE_RISING>,
 				<GIC_SPI 52 IRQ_TYPE_EDGE_RISING>,
-				<GIC_SPI 153 IRQ_TYPE_EDGE_RISING>,
 				<GIC_SPI 55 IRQ_TYPE_EDGE_RISING>,
 				<GIC_SPI 57 IRQ_TYPE_EDGE_RISING>;
 			interrupt-names = "csiphy0",
 				"csiphy1",
 				"csid0",
 				"csid1",
-				"csid2",
 				"ispif",
 				"vfe0";
 			power-domains = <&gcc VFE_GDSC>;
@@ -1483,11 +1479,6 @@
 				<&gcc GCC_CAMSS_CSI1PHY_CLK>,
 				<&gcc GCC_CAMSS_CSI1PIX_CLK>,
 				<&gcc GCC_CAMSS_CSI1RDI_CLK>,
-				<&gcc GCC_CAMSS_CSI2_AHB_CLK>,
-				<&gcc GCC_CAMSS_CSI2_CLK>,
-				<&gcc GCC_CAMSS_CSI2PHY_CLK>,
-				<&gcc GCC_CAMSS_CSI2PIX_CLK>,
-				<&gcc GCC_CAMSS_CSI2RDI_CLK>,
 				<&gcc GCC_CAMSS_AHB_CLK>,
 				<&gcc GCC_CAMSS_VFE0_CLK>,
 				<&gcc GCC_CAMSS_CSI_VFE0_CLK>,
@@ -1507,11 +1498,6 @@
 				"csi1_phy",
 				"csi1_pix",
 				"csi1_rdi",
-				"csi2_ahb",
-				"csi2",
-				"csi2_phy",
-				"csi2_pix",
-				"csi2_rdi",
 				"ahb",
 				"vfe0",
 				"csi_vfe0",
@@ -1539,15 +1525,13 @@
 			#size-cells = <0>;
 			reg = <0x01b0c000 0x1000>;
 			interrupts = <GIC_SPI 50 IRQ_TYPE_EDGE_RISING>;
-			clocks = <&gcc GCC_CAMSS_ISPIF_AHB_CLK>,
-				<&gcc GCC_CAMSS_TOP_AHB_CLK>,
+			clocks = <&gcc GCC_CAMSS_TOP_AHB_CLK>,
 				<&gcc GCC_CAMSS_CCI_AHB_CLK>,
 				<&gcc GCC_CAMSS_CCI_CLK>,
 				<&gcc GCC_CAMSS_AHB_CLK>;
-			clock-names = "ispif_ahb", "camss_top_ahb", "cci_ahb",
+			clock-names = "camss_top_ahb", "cci_ahb",
 					  "cci", "camss_ahb";
-			assigned-clocks = <&gcc GCC_CAMSS_ISPIF_AHB_CLK>,
-					  //<&gcc GCC_CAMSS_CCI_AHB_CLK>,
+			assigned-clocks = <&gcc GCC_CAMSS_CCI_AHB_CLK>,
 					  <&gcc GCC_CAMSS_CCI_CLK>;
 			assigned-clock-rates = <80000000>, <19200000>;
 			pinctrl-names = "default";
