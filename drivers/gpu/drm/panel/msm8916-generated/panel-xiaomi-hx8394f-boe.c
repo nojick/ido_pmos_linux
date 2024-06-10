@@ -141,7 +141,7 @@ static const struct drm_display_mode hx8394f_boe_mode = {
 	.vtotal = 1280 + 15 + 4 + 12,
 	.width_mm = 62,
 	.height_mm = 110,
-	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+	.type = DRM_MODE_TYPE_DRIVER,
 };
 
 static int hx8394f_boe_get_modes(struct drm_panel *panel,
