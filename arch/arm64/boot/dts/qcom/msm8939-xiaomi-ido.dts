@@ -175,18 +175,24 @@
 
 		reg_lcd_pos: outp {
 			regulator-name = "outp";
+			regulator-boot-on;
+			regulator-always-on;
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
 			enable-gpios = <&tlmm 97 GPIO_ACTIVE_HIGH>;
 			regulator-active-discharge = <1>;
+			ti,active-discharge-time-us = <800>;
 		};
 
 		reg_lcd_neg: outn {
 			regulator-name = "outn";
+			regulator-boot-on;
+			regulator-always-on;
 			regulator-min-microvolt = <5000000>;
 			regulator-max-microvolt = <5000000>;
 			enable-gpios = <&tlmm 98 GPIO_ACTIVE_HIGH>;
 			regulator-active-discharge = <1>;
+			ti,active-discharge-time-us = <800>;
 		};
 	};
 
