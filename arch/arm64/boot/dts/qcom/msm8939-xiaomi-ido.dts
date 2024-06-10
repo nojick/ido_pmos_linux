@@ -283,18 +283,9 @@
 			regulator-max-microvolt = <5000000>;
 			regulator-min-microamp = <500000>;
 			regulator-max-microamp = <500000>;
-	};
-};
-	cw2015@62 {
-		compatible = "cellwise,cw2015";
-		reg = <0x62>;
-		interrupts-extended  = <&tlmm 120 IRQ_TYPE_LEVEL_LOW>;
-		cellwise,monitor-interval-ms = <1000>;
-		vdd-supply = <&pm8916_l17>;
-		vcc_i2c-supply = <&pm8916_l6>;
-		monitored-battery = <&battery>;
-		power-supplies = <&power_supply>;
 		};
+	};
+
 };
 
 &blsp_i2c5 {
@@ -451,6 +442,12 @@ ports {
 
 &mpss_mem {
 	reg = <0x0 0x86800000 0x0 0x05600000>;
+};
+
+&pm8916_bms {
+	monitored-battery = <&battery>;
+	power-supplies = <&power_supply>;
+	status = "okay";
 };
 
 &pm8916_pwm {
