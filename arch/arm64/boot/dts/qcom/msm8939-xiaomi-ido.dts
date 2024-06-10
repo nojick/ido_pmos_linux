@@ -385,6 +385,17 @@ ports {
 	status = "okay";
 
 	ports {
+		port@0 {
+			reg = <0>;
+			csiphy0_ep: endpoint {
+				clock-lanes = <1>;
+                                data-lanes = <1 2 3 4>;
+				remote-endpoint = <&s5k3l8>;
+			};
+		};
+	};
+
+	ports {
 		port@1 {
 			reg = <1>;
 			csiphy1_ep: endpoint {
@@ -401,6 +412,29 @@ ports {
 };
 
 &cci_i2c0 {
+
+	camera-sensor@10 { // Primary rear camera
+		compatible = "samsung,s5k3l8";
+		reg = <0x10>;
+		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
+		clock-frequency = <24000000>;
+		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&tlmm 35 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&camera_rear_default>;
+		pinctrl-names = "default";
+		avdd-supply = <&pm8916_l17>;
+		dvdd-supply = <&reg_cam_vdig>;
+		vio-supply = <&pm8916_l6>;
+		aux-supply = <&pm8916_l10>;
+		status = "okay";
+		orientation = <1>;
+		port {
+			s5k3l8: endpoint {
+				data-lanes = <1 2 3 4>;
+				remote-endpoint = <&csiphy0_ep>;
+			};
+		};
+	};
 
 	camera-sensor@36 { // Primary front camera
 		compatible = "ovti,ov5670";
