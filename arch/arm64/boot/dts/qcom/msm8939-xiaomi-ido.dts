@@ -8,6 +8,7 @@
 #include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/power/summit,smb347-charger.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	model = "Xiaomi Redmi 3";
@@ -141,6 +142,22 @@
 		num-interpolated-steps = <255>;
 		default-brightness-level = <255>;
 	};
+
+	flash-led-controller {
+		compatible = "sgmicro,sgm3140";
+		flash-gpios = <&msmgpio 31 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&msmgpio 32 GPIO_ACTIVE_HIGH>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&camera_flash_default>;
+
+		flash_led: led {
+			function = LED_FUNCTION_FLASH;
+			color = <LED_COLOR_ID_WHITE>;
+			flash-max-timeout-us = <250000>;
+		};
+	};
+
 };
 
 &blsp_uart2 {
@@ -410,13 +427,11 @@ ports {
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		clock-names = "xvclk";
 		clock-frequency = <24000000>;
-		//assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		//assigned-clock-rates = <23880000>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 		powerdown-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
-		
+		flash-leds = <&flash_led>;
 
 		dovdd-supply = <&pm8916_l6>;
 		avdd-supply = <&pm8916_l17>;
@@ -578,6 +593,14 @@ ports {
 	};
 
 &tlmm {
+	camera_flash_default: camera-flash-default {
+		pins = "gpio31", "gpio32";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 	usb_id_default: usb-id-default {
 		pins = "gpio110";
 		function = "gpio";
