@@ -179,7 +179,6 @@
 			regulator-max-microvolt = <5000000>;
 			enable-gpios = <&tlmm 97 GPIO_ACTIVE_HIGH>;
 			regulator-active-discharge = <1>;
-			regulator-boot-on;
 		};
 
 		reg_lcd_neg: outn {
@@ -188,7 +187,6 @@
 			regulator-max-microvolt = <5000000>;
 			enable-gpios = <&tlmm 98 GPIO_ACTIVE_HIGH>;
 			regulator-active-discharge = <1>;
-			regulator-boot-on;
 		};
 	};
 
