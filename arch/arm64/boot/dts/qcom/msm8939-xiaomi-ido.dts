@@ -389,7 +389,7 @@ ports {
 			reg = <0>;
 			csiphy0_ep: endpoint {
 				clock-lanes = <1>;
-                                data-lanes = <1 2 3 4>;
+                                data-lanes = <0 2 3 4>;
 				remote-endpoint = <&s5k3l8>;
 			};
 		};
