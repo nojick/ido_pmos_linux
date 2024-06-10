@@ -367,7 +367,6 @@ panel: panel@0 {
 		compatible = "xiaomi,ido-panel";
 		reg = <0>;
 		
-		power-supply = <&pm8916_l17>;
 		backlight = <&backlight>;
 		vsp-supply = <&reg_lcd_pos>;
 		vsn-supply = <&reg_lcd_neg>;
