@@ -145,8 +145,8 @@
 
 	flash-led-controller {
 		compatible = "sgmicro,sgm3140";
-		flash-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-		enable-gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
+		flash-gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&camera_flash_default>;
