@@ -720,6 +720,7 @@ struct s5k2xx {
 
 	struct regulator_bulk_data supplies[S5K2XX_NUM_SUPPLIES];
 	struct clk	 *mclk;
+	struct gpio_desc *pwdn_gpio; /* PWDNB pin. */
 	struct gpio_desc *reset_gpio;
 	int enabled;
 
@@ -1073,6 +1074,7 @@ static int s5k2xx_power_on(struct device *dev)
 
 	usleep_range(1000, 2000);
 
+	gpiod_set_value_cansleep(s5k2xx->pwdn_gpio, 0);
 	gpiod_set_value_cansleep(s5k2xx->reset_gpio, 0);
 
 	usleep_range(10000, 11000);
@@ -1094,6 +1096,7 @@ static int s5k2xx_power_off(struct device *dev)
 	if (--(s5k2xx->enabled) > 0)
 		return 0;
 
+	gpiod_set_value_cansleep(s5k2xx->pwdn_gpio, 1);
 	gpiod_set_value_cansleep(s5k2xx->reset_gpio, 1);
 
 	regulator_bulk_disable(S5K2XX_NUM_SUPPLIES, s5k2xx->supplies);
@@ -1341,6 +1344,10 @@ static int s5k2xx_of_init(struct s5k2xx *s5k2xx, struct device *dev)
 		return PTR_ERR(s5k2xx->mclk);
 
 	/* Request optional enable pin */
+	s5k2xx->pwdn_gpio = devm_gpiod_get_optional(dev, "powerdown", GPIOD_OUT_HIGH);
+	if (IS_ERR(s5k2xx->pwdn_gpio))
+		return PTR_ERR(s5k2xx->pwdn_gpio);
+
 	s5k2xx->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(s5k2xx->reset_gpio))
 		return PTR_ERR(s5k2xx->reset_gpio);
