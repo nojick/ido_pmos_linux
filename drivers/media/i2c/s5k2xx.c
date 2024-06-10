@@ -1344,11 +1344,11 @@ static int s5k2xx_of_init(struct s5k2xx *s5k2xx, struct device *dev)
 		return PTR_ERR(s5k2xx->mclk);
 
 	/* Request optional enable pin */
-	s5k2xx->pwdn_gpio = devm_gpiod_get_optional(dev, "powerdown", GPIOD_OUT_HIGH);
+	s5k2xx->pwdn_gpio = devm_gpiod_get_optional(dev, "powerdown", GPIOD_OUT_LOW);
 	if (IS_ERR(s5k2xx->pwdn_gpio))
 		return PTR_ERR(s5k2xx->pwdn_gpio);
 
-	s5k2xx->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+	s5k2xx->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
 	if (IS_ERR(s5k2xx->reset_gpio))
 		return PTR_ERR(s5k2xx->reset_gpio);
 
