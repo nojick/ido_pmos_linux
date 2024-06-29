@@ -15,7 +15,7 @@
 #include <media/v4l2-device.h>
 #include <media/v4l2-fwnode.h>
 
-#define S5K2XX_MCLK			24000000
+#define S5K2XX_MCLK			23880000
 #define S5K2XX_DATA_LANES		4
 #define S5K2XX_MAX_COLOR_DEPTH		10
 #define S5K2XX_MAX_COLOR_VAL		(BIT(S5K2XX_MAX_COLOR_DEPTH) - 1)
