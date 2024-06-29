@@ -917,7 +917,7 @@ static void s5k2xx_assign_pad_format(const struct s5k2xx_mode *mode,
 {
 	fmt->width = mode->width;
 	fmt->height = mode->height;
-	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
+	fmt->code = MEDIA_BUS_FMT_SBGGR10_DPCM8_1X8;
 	fmt->field = V4L2_FIELD_NONE;
 }
 
