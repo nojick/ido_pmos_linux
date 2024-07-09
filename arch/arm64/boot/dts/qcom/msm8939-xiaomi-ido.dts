@@ -521,7 +521,7 @@ ports {
 	pinctrl-1 = <&sdc2_sleep &sdc2_cd_default>;
 	pinctrl-names = "default", "sleep";
 
-	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
 };
 
 &sound {
