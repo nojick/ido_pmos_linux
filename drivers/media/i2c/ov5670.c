@@ -1758,7 +1758,7 @@ static const char * const ov5670_test_pattern_menu[] = {
 
 /* Supported link frequencies */
 #define OV5670_LINK_FREQ_422MHZ		422400000
-#define OV5670_LINK_FREQ_422MHZ_INDEX	0
+#define OV5670_LINK_FREQ_422MHZ_INDEX	240000000
 static const struct ov5670_link_freq_config link_freq_configs[] = {
 	{
 		.reg_list = {
