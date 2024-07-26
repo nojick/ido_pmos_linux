@@ -409,7 +409,8 @@ ports {
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		clock-names = "xvclk";
-		clock-frequency = <23880000>;
+		assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
+		assigned-clock-rates = <23880000>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
@@ -427,7 +428,7 @@ ports {
 			ov5670: endpoint {
 				data-lanes = <1 2>;
 				remote-endpoint = <&csiphy1_ep>;
-				link-frequencies = /bits/ 64 <420000000>;
+				link-frequencies = /bits/ 64 <210000000 168000000>;
 				clock-noncontinuous;
 			};
 		};
