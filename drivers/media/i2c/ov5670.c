@@ -17,7 +17,7 @@
 #include <media/v4l2-event.h>
 #include <media/v4l2-fwnode.h>
 
-#define OV5670_XVCLK_FREQ		19200000
+#define OV5670_XVCLK_FREQ		24000000
 
 #define OV5670_REG_CHIP_ID		0x300a
 #define OV5670_CHIP_ID			0x005670
