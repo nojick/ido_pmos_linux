@@ -407,7 +407,7 @@ ports {
 		
 		reg = <0x36>;
 
-		clocks = <&gcc MCLK1_CLK_SRC>;
+		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
