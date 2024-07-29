@@ -1135,7 +1135,7 @@ static struct clk_rcg2 mclk1_clk_src = {
 	.freq_tbl = ftbl_gcc_camss_mclk0_1_clk,
 	.clkr.hw.init = &(struct clk_init_data){
 		.name = "mclk1_clk_src",
-		.parent_data = gcc_xo_gpll0_gpll1a_gpll6_sleep_parent_data,
+		.parent_hws = gcc_xo_gpll0_gpll1a_gpll6_sleep_parent_data,
 		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_gpll1a_gpll6_sleep_parent_data),
 		.ops = &clk_rcg2_ops,
 	},
