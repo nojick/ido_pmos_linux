@@ -417,7 +417,7 @@ ports {
 		compatible = "samsung,s5k3l8";
 		reg = <0x10>;
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
-		clock-frequency = <23880000>;
+		clock-frequency = <24000000>;
 		assigned-clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
 		assigned-clock-rates = <24000000>;
 		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_LOW>;
