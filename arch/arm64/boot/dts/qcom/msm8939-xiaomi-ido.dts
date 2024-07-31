@@ -418,8 +418,6 @@ ports {
 		reg = <0x10>;
 		clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
 		clock-frequency = <24000000>;
-		assigned-clocks = <&gcc GCC_CAMSS_MCLK0_CLK>;
-		assigned-clock-rates = <24000000>;
 		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_LOW>;
 		reset-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
 		pinctrl-0 = <&camera_rear_default>;
@@ -444,10 +442,7 @@ ports {
 		reg = <0x36>;
 
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		clock-names = "xvclk";
-		clock-frequency = <23880000>;
-		assigned-clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
-		assigned-clock-rates = <24000000>;
+
 		pinctrl-0 = <&camera_front_default>;
 		pinctrl-names = "default";
 		reset-gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
