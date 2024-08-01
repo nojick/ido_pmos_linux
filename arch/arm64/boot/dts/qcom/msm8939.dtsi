@@ -1507,8 +1507,9 @@
 				"vfe_ahb",
 				"vfe_axi",
 				"ispif_ahb_clk";
-			assigned-clocks =  <&gcc CAMSS_AHB_CLK_SRC>;
-			assigned-clock-rates = <80000000>;
+			assigned-clocks = <&gcc GCC_CAMSS_VFE0_CLK>,
+					  <&gcc CAMSS_AHB_CLK_SRC>;
+			assigned-clock-rates = <266670000>, <80000000>;
 			iommus = <&apps_iommu 3>;
 			status = "disabled";
 			ports {
