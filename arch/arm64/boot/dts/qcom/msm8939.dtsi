@@ -1482,7 +1482,6 @@
 				<&gcc GCC_CAMSS_CSI1RDI_CLK>,
 				<&gcc GCC_CAMSS_AHB_CLK>,
 				<&gcc GCC_CAMSS_VFE0_CLK>,
-				<&gcc VFE0_CLK_SRC>,
 				<&gcc GCC_CAMSS_CSI_VFE0_CLK>,
 				<&gcc GCC_CAMSS_VFE_AHB_CLK>,
 				<&gcc GCC_CAMSS_VFE_AXI_CLK>,
@@ -1504,12 +1503,11 @@
 				"csi1_rdi",
 				"ahb",
 				"vfe0",
-				"vfe0_src",
 				"csi_vfe0",
 				"vfe_ahb",
 				"vfe_axi",
 				"ispif_ahb_clk";
-			assigned-clocks = <&gcc VFE0_CLK_SRC>,
+			assigned-clocks = <&gcc GCC_CAMSS_VFE0_CLK>,
 					  <&gcc CAMSS_AHB_CLK_SRC>;
 			assigned-clock-rates = <266670000>, <80000000>;
 			iommus = <&apps_iommu 3>;
