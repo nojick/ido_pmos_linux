@@ -1483,7 +1483,8 @@
 				<&gcc GCC_CAMSS_VFE0_CLK>,
 				<&gcc GCC_CAMSS_CSI_VFE0_CLK>,
 				<&gcc GCC_CAMSS_VFE_AHB_CLK>,
-				<&gcc GCC_CAMSS_VFE_AXI_CLK>;
+				<&gcc GCC_CAMSS_VFE_AXI_CLK>,
+				<&gcc CAMSS_AHB_CLK_SRC>;
 			clock-names = "top_ahb",
 				"ispif_ahb",
 				"csiphy0_timer",
@@ -1502,7 +1503,8 @@
 				"vfe0",
 				"csi_vfe0",
 				"vfe_ahb",
-				"vfe_axi";
+				"vfe_axi",
+				"ispif_ahb_clk";
 			iommus = <&apps_iommu 3>;
 			status = "disabled";
 			ports {
