@@ -2687,13 +2687,13 @@ static struct clk_branch gcc_camss_csi1phytimer_clk = {
 	},
 };
 
-static struct clk_branch gcc_camss_ahb_clk = {
+static struct clk_branch gcc_camss_top_ahb_clk = {
 	.halt_reg = 0x5a014,
 	.clkr = {
 		.enable_reg = 0x5a014,
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data){
-			.name = "gcc_camss_ahb_clk",
+			.name = "gcc_camss_top_ahb_clk",
 			.parent_hws = (const struct clk_hw*[]){
 				&camss_ahb_clk_src.clkr.hw,
 			},
@@ -2704,16 +2704,13 @@ static struct clk_branch gcc_camss_ahb_clk = {
 	},
 };
 
-static struct clk_branch gcc_camss_top_ahb_clk = {
+static struct clk_branch gcc_camss_ahb_clk = {
 	.halt_reg = 0x56004,
 	.clkr = {
 		.enable_reg = 0x56004,
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data){
-			.name = "gcc_camss_top_ahb_clk",
-			.parent_hws = (const struct clk_hw*[]){
-				&pcnoc_bfdcd_clk_src.clkr.hw,
-			},
+			.name = "gcc_camss_ahb_clk",
 			.num_parents = 1,
 			.flags = CLK_SET_RATE_PARENT,
 			.ops = &clk_branch2_ops,
