@@ -2711,6 +2711,9 @@ static struct clk_branch gcc_camss_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data){
 			.name = "gcc_camss_ahb_clk",
+			.parent_hws = (const struct clk_hw*[]){
+				&pcnoc_bfdcd_clk_src.clkr.hw,
+			},
 			.num_parents = 1,
 			.flags = CLK_SET_RATE_PARENT,
 			.ops = &clk_branch2_ops,
