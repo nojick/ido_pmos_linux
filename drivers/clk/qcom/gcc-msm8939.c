@@ -330,7 +330,7 @@ static struct clk_regmap gpll6_vote = {
 
 static const struct parent_map gcc_xo_gpll0_map[] = {
 	{ P_XO, 0 },
-	{ P_GPLL0, 1 },
+	{ P_GPLL0, 2 },
 };
 
 static const struct clk_parent_data gcc_xo_gpll0_parent_data[] = {
@@ -480,21 +480,19 @@ static const struct clk_parent_data gcc_xo_gpll0a_dsibyte_parent_data[] = {
 
 static const struct parent_map gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_map[] = {
 	{ P_XO, 0 },
-	{ P_GPLL1, 1 },
-	{ P_DSI0_PHYPLL_DSI, 2 },
-	{ P_GPLL6, 3 },
+	{ P_GPLL1, 1 },,
 	{ P_GPLL3_AUX, 4 },
 	{ P_GPLL0_AUX, 5 },
 };
 
+
 static const struct clk_parent_data gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_parent_data[] = {
 	{ .fw_name = "xo" },
 	{ .hw = &gpll1_vote.hw },
-	{ .fw_name = "dsi0pll", .name = "dsi0pll" },
-	{ .hw = &gpll6_vote.hw },
 	{ .hw = &gpll3_vote.hw },
 	{ .hw = &gpll0_vote.hw },
 };
+
 
 static const struct parent_map gcc_xo_gpll0a_dsiphy_map[] = {
 	{ P_XO, 0 },
@@ -1354,7 +1352,7 @@ static const struct freq_tbl ftbl_gcc_mdss_mdp_clk[] = {
 	F(80000000, P_GPLL0_AUX, 10, 0, 0),
 	F(100000000, P_GPLL0_AUX, 8, 0, 0),
 	F(145500000, P_GPLL0_AUX, 5.5, 0, 0),
-	F(153600000, P_GPLL0, 4, 0, 0),
+	F(153600000, P_GPLL1, 4, 0, 0),
 	F(160000000, P_GPLL0_AUX, 5, 0, 0),
 	F(177780000, P_GPLL0_AUX, 4.5, 0, 0),
 	F(200000000, P_GPLL0_AUX, 4, 0, 0),
