@@ -480,7 +480,7 @@ static const struct clk_parent_data gcc_xo_gpll0a_dsibyte_parent_data[] = {
 
 static const struct parent_map gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_map[] = {
 	{ P_XO, 0 },
-	{ P_GPLL1, 1 },,
+	{ P_GPLL1, 1 },
 	{ P_GPLL3_AUX, 4 },
 	{ P_GPLL0_AUX, 5 },
 };
