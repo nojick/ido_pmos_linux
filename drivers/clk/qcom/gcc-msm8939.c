@@ -330,7 +330,7 @@ static struct clk_regmap gpll6_vote = {
 
 static const struct parent_map gcc_xo_gpll0_map[] = {
 	{ P_XO, 0 },
-	{ P_GPLL0, 2 },
+	{ P_GPLL0, 1 },
 };
 
 static const struct clk_parent_data gcc_xo_gpll0_parent_data[] = {
@@ -432,7 +432,7 @@ static const struct parent_map gcc_xo_gpll0_gpll1a_gpll6_sleep_map[] = {
 	{ P_XO, 0 },
 	{ P_GPLL0, 1 },
 	{ P_GPLL1_AUX, 2 },
-	{ P_GPLL6, 3 },
+	{ P_GPLL6, 2 },
 	{ P_SLEEP_CLK, 6 },
 };
 
@@ -468,29 +468,23 @@ static const struct clk_parent_data gcc_xo_dsibyte_parent_data[] = {
 
 static const struct parent_map gcc_xo_gpll0a_dsibyte_map[] = {
 	{ P_XO, 0 },
-	{ P_GPLL0_AUX, 2 },
 	{ P_DSI0_PHYPLL_BYTE, 1 },
 };
 
 static const struct clk_parent_data gcc_xo_gpll0a_dsibyte_parent_data[] = {
 	{ .fw_name = "xo" },
-	{ .hw = &gpll0_vote.hw },
 	{ .fw_name = "dsi0pllbyte", .name = "dsi0pllbyte" },
 };
 
 static const struct parent_map gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_map[] = {
 	{ P_XO, 0 },
 	{ P_GPLL1, 1 },
-	{ P_GPLL3_AUX, 4 },
-	{ P_GPLL0_AUX, 5 },
 };
 
 
 static const struct clk_parent_data gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_parent_data[] = {
 	{ .fw_name = "xo" },
 	{ .hw = &gpll1_vote.hw },
-	{ .hw = &gpll3_vote.hw },
-	{ .hw = &gpll0_vote.hw },
 };
 
 
