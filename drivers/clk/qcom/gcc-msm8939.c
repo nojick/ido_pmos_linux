@@ -479,12 +479,13 @@ static const struct clk_parent_data gcc_xo_gpll0a_dsibyte_parent_data[] = {
 static const struct parent_map gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_map[] = {
 	{ P_XO, 0 },
 	{ P_GPLL1, 1 },
+
 };
 
 
 static const struct clk_parent_data gcc_xo_gpll1_dsiphy_gpll6_gpll3a_gpll0a_parent_data[] = {
 	{ .fw_name = "xo" },
-	{ .hw = &gpll1_vote.hw },
+	{ .hw = &gpll0.clkr.hw },
 };
 
 
@@ -1342,17 +1343,7 @@ static struct clk_rcg2 esc1_clk_src = {
 };
 
 static const struct freq_tbl ftbl_gcc_mdss_mdp_clk[] = {
-	F(50000000, P_GPLL0_AUX, 16, 0, 0),
-	F(80000000, P_GPLL0_AUX, 10, 0, 0),
-	F(100000000, P_GPLL0_AUX, 8, 0, 0),
-	F(145500000, P_GPLL0_AUX, 5.5, 0, 0),
-	F(153600000, P_GPLL1, 4, 0, 0),
-	F(160000000, P_GPLL0_AUX, 5, 0, 0),
-	F(177780000, P_GPLL0_AUX, 4.5, 0, 0),
-	F(200000000, P_GPLL0_AUX, 4, 0, 0),
-	F(266670000, P_GPLL0_AUX, 3, 0, 0),
-	F(307200000, P_GPLL1, 2, 0, 0),
-	F(366670000, P_GPLL3_AUX, 3, 0, 0),
+	F(307200000, P_GPLL1, 2.669270833, 0, 0),
 	{ }
 };
 
@@ -3020,6 +3011,7 @@ static struct clk_branch gcc_mdss_esc1_clk = {
 
 static struct clk_branch gcc_mdss_mdp_clk = {
 	.halt_reg = 0x4D088,
+	.halt_check = BRANCH_HALT,
 	.clkr = {
 		.enable_reg = 0x4D088,
 		.enable_mask = BIT(0),
