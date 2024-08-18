@@ -25,23 +25,24 @@
 
 	/* AW8736 */
 	speaker_amp: audio-amplifier {
-		compatible = "simple-audio-amplifier";
+		compatible = "awinic,aw8738";
 
 		pinctrl-0 = <&spk_ext_default>;
 		pinctrl-names = "default";
 
-		enable-gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
-		awinic,mode = <3>;
+		mode-gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
+		awinic,mode = <5>;
 		sound-name-prefix = "Speaker Amp";
 	};
 
 	headphones_switch: audio-switch {
-		compatible = "simple-audio-amplifier";
+		compatible = "awinic,aw8738";
 
 		pinctrl-0 = <&headphones_switch_default>;
 		pinctrl-names = "default";
 
-		enable-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
+		mode-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
+		awinic,mode = <5>;
 		sound-name-prefix = "Headphones Switch";
 	};
 
@@ -537,14 +538,12 @@ ports {
 		"Headphone", "Headphones";
 	pin-switches = "Speaker", "Headphones";
 	audio-routing =
-		"Speaker", "Speaker Amp OUTL",
-		"Speaker", "Speaker Amp OUTR",
-		"Speaker Amp INL", "HPH_R",
-		"Speaker Amp INR", "HPH_R",
-		"Headphones", "Headphones Switch OUTL",
-		"Headphones", "Headphones Switch OUTR",
-		"Headphones Switch INL", "HPH_L",
-		"Headphones Switch INR", "HPH_R",
+		"Speaker", "Speaker Amp OUT",
+		"Speaker Amp IN", "HPH_L",
+		"Speaker Amp IN", "HPH_R",
+		"Headphones", "Headphones Switch OUT",
+		"Headphones Switch IN", "HPH_L",
+		"Headphones Switch IN", "HPH_R",
 		"AMIC1", "MIC BIAS External1",
 		"AMIC2", "MIC BIAS Internal2",
 		"AMIC3", "MIC BIAS External1";
