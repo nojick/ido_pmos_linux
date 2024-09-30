@@ -31,5 +31,6 @@ obj-$(CONFIG_SENSORS_RM3100_I2C)	+= rm3100-i2c.o
 obj-$(CONFIG_SENSORS_RM3100_SPI)	+= rm3100-spi.o
 
 obj-$(CONFIG_TI_TMAG5273)		+= tmag5273.o
-
+obj-$(CONFIG_YAMAHA_YAS530)		+= sensors_class.o
+obj-$(CONFIG_YAMAHA_YAS530) += yas_mag_kernel.o
 obj-$(CONFIG_YAMAHA_YAS530)		+= yamaha-yas530.o

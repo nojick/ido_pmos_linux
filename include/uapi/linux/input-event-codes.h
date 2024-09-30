@@ -60,6 +60,8 @@
 #define SYN_DROPPED		3
 #define SYN_MAX			0xf
 #define SYN_CNT			(SYN_MAX+1)
+#define SYN_TIME_SEC		4
+#define SYN_TIME_NSEC		5
 
 /*
  * Keys and buttons
