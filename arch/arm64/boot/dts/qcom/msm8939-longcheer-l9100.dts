@@ -164,8 +164,6 @@
 	flash-led-controller@53 {
 		compatible = "silergy,sy7802";
 		reg = <0x53>;
-		#address-cells = <1>;
-		#size-cells = <0>;
 
 		enable-gpios = <&tlmm 16 GPIO_ACTIVE_HIGH>;
 

@@ -29,7 +29,7 @@ static struct signal_struct init_signals = {
 	.cred_guard_mutex = __MUTEX_INITIALIZER(init_signals.cred_guard_mutex),
 	.exec_update_lock = __RWSEM_INITIALIZER(init_signals.exec_update_lock),
 #ifdef CONFIG_POSIX_TIMERS
-	.posix_timers = LIST_HEAD_INIT(init_signals.posix_timers),
+	.posix_timers	= HLIST_HEAD_INIT,
 	.cputimer	= {
 		.cputime_atomic	= INIT_CPUTIME_ATOMIC,
 	},
@@ -206,6 +206,10 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 #endif
 #ifdef CONFIG_SECCOMP_FILTER
 	.seccomp	= { .filter_count = ATOMIC_INIT(0) },
+#endif
+#ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
+	.android_vendor_data1 = {0, },
+	.android_oem_data1 = {0, },
 #endif
 };
 EXPORT_SYMBOL(init_task);

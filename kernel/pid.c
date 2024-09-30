@@ -355,11 +355,6 @@ static void __change_pid(struct task_struct *task, enum pid_type type,
 	hlist_del_rcu(&task->pid_links[type]);
 	*pid_ptr = new;
 
-	if (type == PIDTYPE_PID) {
-		WARN_ON_ONCE(pid_has_task(pid, PIDTYPE_PID));
-		wake_up_all(&pid->wait_pidfd);
-	}
-
 	for (tmp = PIDTYPE_MAX; --tmp >= 0; )
 		if (pid_has_task(pid, tmp))
 			return;
@@ -434,6 +429,7 @@ struct task_struct *find_task_by_vpid(pid_t vnr)
 {
 	return find_task_by_pid_ns(vnr, task_active_pid_ns(current));
 }
+EXPORT_SYMBOL_GPL(find_task_by_vpid);
 
 struct task_struct *find_get_task_by_vpid(pid_t nr)
 {

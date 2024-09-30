@@ -37,10 +37,14 @@ struct prefix_info {
 		struct __packed {
 #if defined(__BIG_ENDIAN_BITFIELD)
 			__u8	onlink : 1,
-			 	autoconf : 1,
-				reserved : 6;
+				autoconf : 1,
+				routeraddr : 1,
+				preferpd : 1,
+				reserved : 4;
 #elif defined(__LITTLE_ENDIAN_BITFIELD)
-			__u8	reserved : 6,
+			__u8	reserved : 4,
+				preferpd : 1,
+				routeraddr : 1,
 				autoconf : 1,
 				onlink : 1;
 #else
@@ -183,10 +187,12 @@ static inline int addrconf_ifid_eui48(u8 *eui, struct net_device *dev)
 	return 0;
 }
 
+#define INFINITY_LIFE_TIME 0xFFFFFFFF
+
 static inline unsigned long addrconf_timeout_fixup(u32 timeout,
 						   unsigned int unit)
 {
-	if (timeout == 0xffffffff)
+	if (timeout == INFINITY_LIFE_TIME)
 		return ~0UL;
 
 	/*
@@ -280,6 +286,18 @@ static inline bool ipv6_is_mld(struct sk_buff *skb, int nexthdr, int offset)
 void addrconf_prefix_rcv(struct net_device *dev,
 			 u8 *opt, int len, bool sllao);
 
+/* Determines into what table to put autoconf PIO/RIO/default routes
+ * learned on this device.
+ *
+ * - If 0, use the same table for every device. This puts routes into
+ *   one of RT_TABLE_{PREFIX,INFO,DFLT} depending on the type of route
+ *   (but note that these three are currently all equal to
+ *   RT6_TABLE_MAIN).
+ * - If > 0, use the specified table.
+ * - If < 0, put routes into table dev->ifindex + (-rt_table).
+ */
+u32 addrconf_rt_table(const struct net_device *dev, u32 default_table);
+
 /*
  *	anycast prototypes (anycast.c)
  */
@@ -327,7 +345,7 @@ static inline struct inet6_dev *__in6_dev_get(const struct net_device *dev)
 /**
  * __in6_dev_stats_get - get inet6_dev pointer for stats
  * @dev: network device
- * @skb: skb for original incoming interface if neeeded
+ * @skb: skb for original incoming interface if needed
  *
  * Caller must hold rcu_read_lock or RTNL, because this function
  * does not take a reference on the inet6_dev.

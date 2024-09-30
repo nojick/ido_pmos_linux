@@ -108,19 +108,6 @@
 	};
 };
 
-&panel {
-	compatible = "samsung,s6d2aa0x62-lpm053a250a";
-
-	vcc-supply = <&reg_vlcd_vcc>;
-	vsp-supply = <&reg_vsp>;
-	vsn-supply = <&reg_vsn>;
-
-	backlight-gpios = <&tlmm 98 GPIO_ACTIVE_HIGH>;
-
-	pinctrl-names = "default";
-	pinctrl-0 = <&lcd_bl_en_default>;
-};
-
 &reg_motor_vdd {
 	gpio = <&tlmm 72 GPIO_ACTIVE_HIGH>;
 };

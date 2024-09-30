@@ -50,6 +50,12 @@ enum {
 	POWER_SUPPLY_CHARGE_TYPE_CUSTOM,	/* use CHARGE_CONTROL_* props */
 	POWER_SUPPLY_CHARGE_TYPE_LONGLIFE,	/* slow speed, longer life */
 	POWER_SUPPLY_CHARGE_TYPE_BYPASS,	/* bypassing the charger */
+
+	/*
+	 * force to 50 to minimize the chances of userspace binary
+	 * incompatibility on newer upstream kernels
+	 */
+	POWER_SUPPLY_CHARGE_TYPE_TAPER_EXT = 50,	/* charging in CV phase */
 };
 
 enum {
@@ -243,8 +249,7 @@ struct power_supply_desc {
 	const char *name;
 	enum power_supply_type type;
 	u8 charge_behaviours;
-	const enum power_supply_usb_type *usb_types;
-	size_t num_usb_types;
+	u32 usb_types;
 	const enum power_supply_property *properties;
 	size_t num_properties;
 
@@ -776,12 +781,22 @@ static inline struct power_supply *power_supply_get_by_name(const char *name)
 #ifdef CONFIG_OF
 extern struct power_supply *power_supply_get_by_phandle(struct device_node *np,
 							const char *property);
+extern int power_supply_get_by_phandle_array(struct device_node *np,
+					     const char *property,
+					     struct power_supply **psy,
+					     ssize_t size);
 extern struct power_supply *devm_power_supply_get_by_phandle(
 				    struct device *dev, const char *property);
 #else /* !CONFIG_OF */
 static inline struct power_supply *
 power_supply_get_by_phandle(struct device_node *np, const char *property)
 { return NULL; }
+static inline int
+power_supply_get_by_phandle_array(struct device_node *np,
+				  const char *property,
+				  struct power_supply **psy,
+				  int size)
+{ return 0; }
 static inline struct power_supply *
 devm_power_supply_get_by_phandle(struct device *dev, const char *property)
 { return NULL; }

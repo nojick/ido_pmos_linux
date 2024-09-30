@@ -53,6 +53,7 @@ struct ipv6_devconf {
 	__s32		accept_ra_rt_info_max_plen;
 #endif
 #endif
+	__s32		accept_ra_rt_table;
 	__s32		accept_source_route;
 	__s32		accept_ra_from_local;
 #ifdef CONFIG_IPV6_OPTIMISTIC_DAD
@@ -89,6 +90,7 @@ struct ipv6_devconf {
 	__u8		ioam6_enabled;
 	__u8		ndisc_evict_nocarrier;
 	__u8		ra_honor_pio_life;
+	__u8		ra_honor_pio_pflag;
 
 	struct ctl_table_header *sysctl_header;
 };
@@ -124,7 +126,7 @@ static inline unsigned int ipv6_transport_len(const struct sk_buff *skb)
 	       skb_network_header_len(skb);
 }
 
-/* 
+/*
    This structure contains results of exthdrs parsing
    as offsets from skb->nh.
  */
