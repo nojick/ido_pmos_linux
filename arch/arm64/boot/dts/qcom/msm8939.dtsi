@@ -272,7 +272,7 @@
 
 		smd-edge {
 			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
-			mboxes = <&apcs1_mbox 0>;
+			qcom,ipc = <&apcs1_mbox 8 0>;
 			qcom,smd-edge = <15>;
 
 			rpm_requests: rpm-requests {
@@ -475,7 +475,8 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		mboxes = <0>, <&apcs1_mbox 13>, <0>, <&apcs1_mbox 19>;
+		qcom,ipc-1 = <&apcs1_mbox 8 13>;
+		qcom,ipc-3 = <&apcs1_mbox 8 19>;
 
 		apps_smsm: apps@0 {
 			reg = <0>;
@@ -2114,7 +2115,7 @@
 
 			smd-edge {
 				interrupts = <GIC_SPI 142 IRQ_TYPE_EDGE_RISING>;
-				mboxes = <&apcs1_mbox 17>;
+				qcom,ipc = <&apcs1_mbox 8 17>;
 				qcom,smd-edge = <6>;
 				qcom,remote-pid = <4>;
 
