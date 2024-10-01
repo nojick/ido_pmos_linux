@@ -56,13 +56,17 @@ static struct vdso_info
 } vdso_info;
 
 /* Straight from the ELF specification. */
-static unsigned long elf_hash(const unsigned char *name)
+static unsigned long elf_hash(const char *name)
 {
 	unsigned long h = 0, g;
-	while (*name)
+	const unsigned char *s;
+
+	s = (const unsigned char *) name;
+	while (*s)
 	{
-		h = (h << 4) + *name++;
-		if (g = h & 0xf0000000)
+		h = (h << 4) + *s++;
+		g = h & 0xf0000000;
+		if (h)
 			h ^= g >> 24;
 		h &= ~g;
 	}
