@@ -106,16 +106,6 @@
 	constant-charge-current-max-microamp = <1800000>;
 	operating-range-celsius = <0 45>;
         alert-celsius = <3 42>;
-	ocv-capacity-celsius = <25>;
-	ocv-capacity-table-0 = <4380000 100>, <4292000 95>,
-			<4234000 90>, <4190000 85>, <4158000 80>, <4125000 75>,
-			<4090000 70>, <4040000 65>, <3988000 60>, <3950000 55>,
-			<3925000 50>, <3880000 45>, <3840000 40>, <3800000 35>,
-			<3784000 30>, <3761000 25>, <3743000 20>, <3722000 16>,
-			<3702000 13>, <3690000 11>, <3688000 10>, <3687000 9>,
-			<3685000 8>, <3683000 7>, <3677000 6>, <3656000 5>,
-			<3612000 4>, <3554000 3>, <3462000 2>, <3322000 1>,
-			<3000000 0>;
     };
 
     usb_id: usb-id {
@@ -258,7 +248,7 @@
 	power_supply: charger@57 {
 		compatible = "summit,smb358";
 		reg = <0x57>;
-		interrupts-extended  = <&tlmm 62 IRQ_TYPE_LEVEL_HIGH>;
+		interrupts-extended  = <&tlmm 62 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&smb_int_default>;	
 		summit,enable-charge-control = <SMB3XX_CHG_ENABLE_PIN_ACTIVE_HIGH>;
@@ -277,6 +267,29 @@
 		};
 	};
 
+	cw2015@62 {
+		compatible = "cellwise,cw2015";
+		reg = <0x62>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <120 IRQ_TYPE_LEVEL_LOW>;
+		cellwise,monitor-interval-ms = <5000>;
+		vdd-supply = <&pm8916_l17>;
+		vcc_i2c-supply = <&pm8916_l6>;
+		cellwise,battery-profile = /bits/ 8 <
+				0x17 0xF0 0x65 0x6C 0x6D 0x6D 0x68
+				0x66 0x62 0x65 0x5E 0x59 0x5B 0x51
+				0x48 0x40 0x38 0x2E 0x2A 0x21 0x27
+				0x32 0x42 0x4D 0x26 0x49 0x0B 0x85
+				0x2A 0x4A 0x4E 0x5F 0x66 0x62 0x62
+				0x66 0x3F 0x1B 0x65 0x3F 0x0D 0x37
+				0x1F 0x4A 0x80 0x98 0x9B 0x3C 0x5B
+				0x79 0x95 0xC4 0x50 0x8F 0xC2 0xCB
+				0x2F 0x7D 0x72 0xA5 0xB5 0xC1 0x46
+				0xAE
+           	>;
+		monitored-battery = <&battery>;
+		power-supplies = <&power_supply>;
+		};
 };
 
 &blsp_i2c5 {
@@ -381,12 +394,6 @@ ports {
 
 &mpss_mem {
 	reg = <0x0 0x86800000 0x0 0x05600000>;
-};
-
-&pm8916_bms {
-	monitored-battery = <&battery>;
-	power-supplies = <&power_supply>;
-	status = "okay";
 };
 
 &pm8916_pwm {
