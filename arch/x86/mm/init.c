@@ -114,6 +114,12 @@ static unsigned long min_pfn_mapped;
 static bool __initdata can_use_brk_pgt = true;
 
 /*
+ * Provide a run-time mean of disabling ZONE_DMA32 if it is enabled via
+ * CONFIG_ZONE_DMA32.
+ */
+static bool disable_dma32 __ro_after_init;
+
+/*
  * Pages returned are already directly mapped.
  *
  * Changing that is likely to break Xen, see commit:
@@ -1002,7 +1008,7 @@ void __init zone_sizes_init(void)
 	max_zone_pfns[ZONE_DMA]		= min(MAX_DMA_PFN, max_low_pfn);
 #endif
 #ifdef CONFIG_ZONE_DMA32
-	max_zone_pfns[ZONE_DMA32]	= min(MAX_DMA32_PFN, max_low_pfn);
+	max_zone_pfns[ZONE_DMA32]	= disable_dma32 ? 0 : min(MAX_DMA32_PFN, max_low_pfn);
 #endif
 	max_zone_pfns[ZONE_NORMAL]	= max_low_pfn;
 #ifdef CONFIG_HIGHMEM
@@ -1011,6 +1017,18 @@ void __init zone_sizes_init(void)
 
 	free_area_init(max_zone_pfns);
 }
+
+static int __init early_disable_dma32(char *buf)
+{
+	if (!buf)
+		return -EINVAL;
+
+	if (!strcmp(buf, "on"))
+		disable_dma32 = true;
+
+	return 0;
+}
+early_param("disable_dma32", early_disable_dma32);
 
 __visible DEFINE_PER_CPU_ALIGNED(struct tlb_state, cpu_tlbstate) = {
 	.loaded_mm = &init_mm,
@@ -1080,7 +1098,8 @@ struct execmem_info __init *execmem_arch_setup(void)
 
 	start = MODULES_VADDR + offset;
 
-	if (IS_ENABLED(CONFIG_ARCH_HAS_EXECMEM_ROX)) {
+	if (IS_ENABLED(CONFIG_ARCH_HAS_EXECMEM_ROX) &&
+	    cpu_feature_enabled(X86_FEATURE_PSE)) {
 		pgprot = PAGE_KERNEL_ROX;
 		flags = EXECMEM_KASAN_SHADOW | EXECMEM_ROX_CACHE;
 	} else {
