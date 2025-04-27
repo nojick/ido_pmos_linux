@@ -274,7 +274,21 @@
 			regulator-max-microamp = <500000>;
 		};
 	};
+	
+	cw2015: fuel-gauge@62 {
+		compatible = "cellwise,cw2015";
+		reg = <0x62>;
+		vdd-supply = <&pm8916_l17>;
+		vcc-i2c-supply = <&pm8916_l6>;
 
+		interrupts-extended = <&tlmm 120 IRQ_TYPE_EDGE_FALLING>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&cw2015_irq_default>;
+
+		monitored-battery = <&battery>;
+		power-supplies = <&power_supply>;
+	};	
 };
 
 &blsp_i2c5 {
@@ -379,12 +393,6 @@ ports {
 
 &mpss_mem {
 	reg = <0x0 0x86800000 0x0 0x05600000>;
-};
-
-&pm8916_bms {
-	monitored-battery = <&battery>;
-	power-supplies = <&power_supply>;
-	status = "okay";
 };
 
 &pm8916_pwm {
@@ -672,6 +680,14 @@ ports {
 		drive-strength = <2>;
 		bias-disable;
 	};
+	
+	cw2015_irq_default: cw2015-irq-default {
+		pins = "gpio120";
+		function = "gpio";
+		bias-pull-up;
+		input-enable;
+	};
+
 };
 
 &pm8916_mpps {
